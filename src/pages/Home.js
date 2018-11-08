@@ -4,6 +4,8 @@ import SearchBar from 'react-native-searchbar';
 import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
 import DeviceInfo from 'react-native-device-info';
+import fetchTimeout from 'fetch-timeout';
+
 
 import { baseUrl, loginurl, readjournalurl } from '../../App';
 
@@ -27,6 +29,7 @@ export default class Home extends Component {
 
             email: '',
             password: '',
+            fetchTimeoutTime: 10000,
 
             channels: {
 
@@ -40,21 +43,31 @@ export default class Home extends Component {
     }
 
 
-    showSerial(){
+    showSerial() {
 
-        if(this.state.email != ''){
+        if (this.state.email != '') {
+            ToastAndroid.showWithGravity(
+                // DeviceInfo.getSerialNumber(),
+                DeviceInfo.getUniqueID(),
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
+        }
+    }
+
+    showTimeoutError(err) {
         ToastAndroid.showWithGravity(
-            DeviceInfo.getSerialNumber(),
+            err,
             ToastAndroid.LONG,
             ToastAndroid.CENTER
         );
-        }
+
     }
 
     _handleResults(results) {
 
 
-        if(results.length > 0){
+        if (results.length > 0) {
 
             this.setState({ filteredJournals: results });
 
@@ -64,7 +77,7 @@ export default class Home extends Component {
             this.setState({ filteredJournals: this.state.journals });
 
         }
-         
+
 
 
 
@@ -72,10 +85,10 @@ export default class Home extends Component {
 
     _handleChangeText(input) {
 
-     /*   if (input.length <= 0) {
-            this.setState({ filteredJournals: this.state.journals });
-        }
-        this.setState({ filteredJournals: this.state.journals });*/
+        /*   if (input.length <= 0) {
+               this.setState({ filteredJournals: this.state.journals });
+           }
+           this.setState({ filteredJournals: this.state.journals });*/
     }
 
 
@@ -103,7 +116,7 @@ export default class Home extends Component {
             this.state.channels.spettacolo = this.props.navigation.getParam('spettacolo', ''),
             this.state.channels.curiosita = this.props.navigation.getParam('curiosita', '')
 
-            this.state.email = this.props.navigation.getParam('email', '')
+        this.state.email = this.props.navigation.getParam('email', '')
         // this.state.password = this.props.navigation.getParam('password', '')
 
 
@@ -117,9 +130,9 @@ export default class Home extends Component {
 
         try {
 
-           /* this.login();
-            this.refresh();*/
-            if(this.state.email != ""){
+            /* this.login();
+             this.refresh();*/
+            if (this.state.email != "") {
                 this.login();
                 this.refresh();
             } else {
@@ -254,17 +267,17 @@ export default class Home extends Component {
                             placeholder={'cerca...'}
                             heightAdjust={-35}
                             handleResults={this._handleResults}
-                           // handleChangeText={(input) => this._handleChangeText(input)}
+                            // handleChangeText={(input) => this._handleChangeText(input)}
                             showOnLoad
                         />
                     </View>
-                    
+
 
 
 
                     <View style={styles.menubar}>
 
-                      
+
 
                         <Button
                             onPress={() => console.log("pressed")}
@@ -277,15 +290,15 @@ export default class Home extends Component {
                             title=" GIORNALI SFOGLIABILI "
                             color="#252523"
                         />
-                     
+
 
                         <Button
                             onPress={() => this.showSerial()}
-                            title= {this.state.email}
+                            title={this.state.email}
                             color="#252523"
                         />
 
-    
+
 
                         <Button
                             onPress={() => console.log("pressed")}
@@ -335,35 +348,33 @@ export default class Home extends Component {
 
     refreshbyid() {
 
-        return fetch(baseUrl + readjournalurl, {
-
+        // return fetch(baseUrl + readjournalurl, {
+        return fetchTimeout(baseUrl + readjournalurl, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: "deviceid=" + DeviceInfo.getSerialNumber() // <-- Post parameters
+             body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+           // body: "deviceid=" + "aaa",
 
-        })
+
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
+                console.log(response.status)
                 if (response.status != 200) {
 
-                    response.text().then(
+                    response.json().then(
 
-                        (obj) => {
+                        (responseJson) => {
 
-                            // this.setState({ resp: obj });
-
-                            ToastAndroid.showWithGravity(
-                                obj,
-                                ToastAndroid.LONG,
-                                ToastAndroid.CENTER
-                            );
-
-
+                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
+
+                    this.setState({ filteredJournals: [] });
+
 
                 } else {
 
@@ -371,15 +382,10 @@ export default class Home extends Component {
                         .then((responseJson) => {
 
                             if (responseJson.journals.length <= 0) {
-
-                                ToastAndroid.showWithGravity(
-                                    "Nessun giornale disponibile",
-                                    ToastAndroid.LONG,
-                                    ToastAndroid.CENTER
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
                                 );
 
                                 this.setState({ filteredJournals: [] });
-
 
                             } else {
 
@@ -395,10 +401,11 @@ export default class Home extends Component {
 
                                 this.setState({ journals: list });
 
-                               // console.log(this.state.journals)
 
                                 var filtJourn = [];
+
                                 for (var i = 0; i < this.state.journals.length; i++) {
+
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
                                         image: this.state.journals[i].image,
@@ -418,13 +425,14 @@ export default class Home extends Component {
                         })
                 }
             }).catch((error) => {
-                console.error(error);
+                //console.log(error);
+                this.showTimeoutError(error)
             });
     }
 
     refresh() {
 
-        return fetch(baseUrl + "api/home", {
+        return fetchTimeout(baseUrl + "api/home", {
 
             method: 'POST',
             headers: {
@@ -435,26 +443,26 @@ export default class Home extends Component {
                 "curiosita=" + this.state.channels.curiosita + "&" + "spettacolo=" + this.state.channels.spettacolo + "&" +
                 "cronaca=" + this.state.channels.cronaca + "&" + "email=" + this.state.email // <-- Post parameters
 
-        })
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
                 if (response.status != 200) {
- 
-                    response.text().then(
+
+                    response.json().then(
 
                         (obj) => {
 
-                            // this.setState({ resp: obj });
-
                             ToastAndroid.showWithGravity(
-                                obj,
+                                obj.resp,
                                 ToastAndroid.LONG,
                                 ToastAndroid.CENTER
                             );
 
-
                         });
+
+                    this.setState({ filteredJournals: [] });
+
 
                 } else {
 
@@ -462,11 +470,7 @@ export default class Home extends Component {
                         .then((responseJson) => {
                             if (responseJson.journals.length <= 0) {
 
-                                ToastAndroid.showWithGravity(
-                                    "Nessun giornale disponibile",
-                                    ToastAndroid.LONG,
-                                    ToastAndroid.CENTER
-                                );
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
 
                                 this.setState({ filteredJournals: [] });
 
@@ -483,8 +487,6 @@ export default class Home extends Component {
                                 }*/
 
                                 this.setState({ journals: list });
-
-                               // console.log(this.state.journals)
 
                                 var filtJourn = [];
                                 for (var i = 0; i < this.state.journals.length; i++) {
@@ -507,13 +509,14 @@ export default class Home extends Component {
                         })
                 }
             }).catch((error) => {
-                console.error(error);
+                //console.log(error);
+                this.showTimeoutError(error)
             });
     }
 
     login() {
 
-        return fetch(baseUrl + loginurl, {
+        return fetchTimeout(baseUrl + loginurl, {
 
             method: 'POST',
             headers: {
@@ -524,7 +527,7 @@ export default class Home extends Component {
 
             body: "email=" + this.state.email + "&" + "alreadylogged=ok"  // <-- Post parameters
 
-        })
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
@@ -561,6 +564,7 @@ export default class Home extends Component {
 
 
                         });
+                    this.setState({ filteredJournals: [] });
 
                 } else {
 
@@ -594,7 +598,8 @@ export default class Home extends Component {
                         })
                 }
             }).catch((error) => {
-                console.error(error);
+                //console.log(error);
+                this.showTimeoutError(error)
             });
     }
 

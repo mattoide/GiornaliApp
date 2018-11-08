@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { TextInput, View, Button, StyleSheet, Text, ToastAndroid, AsyncStorage, Dimensions } from 'react-native';
+import { TextInput, View, Button, StyleSheet, Text, ToastAndroid, Image, TouchableOpacity, Modal } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
+import fetchTimeout from 'fetch-timeout'
 
-import { baseUrl, loginurl, readjournalurl, homeurl } from '../../App';
+import { baseUrl, loginurl, homeurl } from '../../App';
 
 
 export default class Login extends Component {
@@ -15,78 +16,147 @@ export default class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      message: ''
+      modalVisible: false,
+      fetchTimeoutTime: 10000,
+
     };
   }
-  showSerial(){
+  showSerial() {
 
     ToastAndroid.showWithGravity(
-        DeviceInfo.getSerialNumber(),
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER
+     // DeviceInfo.getSerialNumber(),
+     DeviceInfo.getUniqueID(),
+      ToastAndroid.LONG,
+      ToastAndroid.CENTER
     );
-    
-}
+
+  }
+
+  showTimeoutError(err) {
+    ToastAndroid.showWithGravity(
+      err,
+      ToastAndroid.LONG,
+      ToastAndroid.CENTER
+    );
+
+  }
 
 
 
-  render() {
+  render() {  
 
-    // this.state.message = this.props.navigation.getParam('message', '')
 
     return (
+      <View>
+        
+        <View style={styles.read}>
+
+          <TouchableOpacity
+            style={styles.touchable}
+            onPress={() => this.props.navigation.navigate('Home')}
+          >
+            <Image
+              source={require('../img/newspaper.png')}
+            />
+
+            <Text style={{ alignSelf: "center" }}>
+              Leggi giornali!
+        </Text>
+
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.info}>
+
+          <TouchableOpacity
+            // onPress={() => this.showSerial()}
+            onPress={() => this.setState({ modalVisible: true })}
+
+          >
+            <Image
+              source={require('../img/info.png')}
+            />
+
+          </TouchableOpacity>
+        </View>
+
+        <Modal visible={this.state.modalVisible}
+          onRequestClose={() => this.setState({ modalVisible: true })}
+          animationType={"fade"}
+          transparent={false}
+        >
 
 
-      <View style={styles.view}>
+          <View style={styles.read}>
 
-        <TextInput
-          placeholder="Username"
-          onChangeText={(input) => this.state.email = input}
-        />
+            <Image
+              source={require('../img/newspaper.png')}
+            />
 
-        <TextInput
-          placeholder="Password"
-          onChangeText={(input) => this.state.password = input}
-          secureTextEntry={true}
-        />
+            <TextInput
+              placeholder="Username"
+              onChangeText={(input) => this.state.email = input}
+            />
 
-        <View style={styles.login}>
+            <TextInput
+              placeholder="Password"
+              onChangeText={(input) => this.state.password = input}
+              secureTextEntry={true}
+            />
+          </View>
+
+          <View style={styles.loginButtons}>
+
+            <TouchableOpacity
+              style={styles.space}
+              onPress={() => this.setState({ modalVisible: false })}
+
+            >
+              <Image
+                source={require('../img/annulla.png')}
+              />
+
+            </TouchableOpacity>
+
+
+            <TouchableOpacity
+              style={styles.space}
+              onPress={() => this.login()}
+
+            >
+              <Image
+                source={require('../img/conferma.png')}
+              />
+
+            </TouchableOpacity>
+
+
+
+          </View>
+          {/*   <View style={styles.login}>
           <Button
             onPress={() => this.login()}
             title="Login"
             color="#252523"
-          />
+          />  
 
-          <Button
-            onPress={() =>                 this.props.navigation.navigate('Home')}
-            title="Leggi giornali"
-            color="#252523"   
-          />
-           <Button
-            onPress={() =>                 this.showSerial()}
-            title="MOSTRA NUMERO SERIALE"
-            color="red"   
-          />
-        </View>
+                    </View>
+
+          */}
 
 
 
+        </Modal>
 
-
-        <View >
-          <Text style={styles.res}>
-            {this.state.message}
-          </Text>
-        </View>
 
       </View>
     );
   }
-  
+
 
   readJournals() {
 
-    return fetch(baseUrl + homeurl, { 
+    return fetchTimeout(baseUrl + homeurl, {
 
       method: 'POST',
       headers: {
@@ -104,20 +174,20 @@ export default class Login extends Component {
 
       body: "deviceid=" + DeviceInfo.getSerialNumber() // <-- Post parameters
 
-    })
+    }, this.state.fetchTimeoutTime, "Il server non risponde")
 
       .then((response) => {
 
 
-      /*  response.text().then(
-
-          (obj) => {
-     
-            console.log(obj)
-
-
-
-          });*/
+        /*  response.text().then(
+  
+            (obj) => {
+       
+              console.log(obj)
+  
+  
+  
+            });*/
 
         if (response.status != 200) {
 
@@ -156,22 +226,22 @@ export default class Login extends Component {
                 /* AsyncStorage.setItem('password', this.state.password);
                  AsyncStorage.setItem('email', this.state.user.email); */
 
-               /* console.log(responseJson[0].sport)
-                console.log(responseJson[0].politica)
-
-                console.log(responseJson[0].cronaca)
-                console.log(responseJson[0].spettacolo)
-                console.log(responseJson[0].curiosita)*/
+                /* console.log(responseJson[0].sport)
+                 console.log(responseJson[0].politica)
+ 
+                 console.log(responseJson[0].cronaca)
+                 console.log(responseJson[0].spettacolo)
+                 console.log(responseJson[0].curiosita)*/
 
 
                 this.props.navigation.navigate('Home', {
-                 // password: responseJson[0].password,
+                  // password: responseJson[0].password,
                   email: responseJson[0].email,
                   sport: responseJson[0].sport,
                   politica: responseJson[0].politica,
                   cronaca: responseJson[0].cronaca,
                   spettacolo: responseJson[0].spettacolo,
-                  curiosita:responseJson[0]. curiosita
+                  curiosita: responseJson[0].curiosita
                 }
                 );
 
@@ -183,13 +253,14 @@ export default class Login extends Component {
             })
         }
       }).catch((error) => {
-        console.error(error);
+        //console.log(error);
+        this.showTimeoutError(error)
       });
   }
 
   login() {
 
-    return fetch(baseUrl + loginurl, {
+    return fetchTimeout(baseUrl + loginurl, {
 
       method: 'POST',
       headers: {
@@ -203,24 +274,24 @@ export default class Login extends Component {
           password: this.state.password
   
         }),*/
-       body: "email=" + this.state.email + "&" + "password=" + this.state.password // <-- Post parameters
+      body: "email=" + this.state.email + "&" + "password=" + this.state.password // <-- Post parameters
 
       //body: "email=" + "dio@cane.it" + "&" + "password=" + "asd" // <-- Post parameters
 
-    })
+    }, this.state.fetchTimeoutTime, "Il server non risponde")
 
       .then((response) => {
 
 
-      /*  response.text().then(
-
-          (obj) => {
-     
-            console.log(obj)
-
-
-
-          });*/
+        /*  response.text().then(
+  
+            (obj) => {
+       
+              console.log(obj)
+  
+  
+  
+            });*/
 
         if (response.status != 200) {
 
@@ -256,22 +327,22 @@ export default class Login extends Component {
                 /* AsyncStorage.setItem('password', this.state.password);
                  AsyncStorage.setItem('email', this.state.user.email); */
 
-               /* console.log(responseJson[0].sport)
-                console.log(responseJson[0].politica)
-
-                console.log(responseJson[0].cronaca)
-                console.log(responseJson[0].spettacolo)
-                console.log(responseJson[0].curiosita)*/
+                /* console.log(responseJson[0].sport)
+                 console.log(responseJson[0].politica)
+ 
+                 console.log(responseJson[0].cronaca)
+                 console.log(responseJson[0].spettacolo)
+                 console.log(responseJson[0].curiosita)*/
 
 
                 this.props.navigation.navigate('Home', {
-                 // password: responseJson[0].password,
+                  // password: responseJson[0].password,
                   email: responseJson[0].email,
                   sport: responseJson[0].sport,
                   politica: responseJson[0].politica,
                   cronaca: responseJson[0].cronaca,
                   spettacolo: responseJson[0].spettacolo,
-                  curiosita:responseJson[0]. curiosita
+                  curiosita: responseJson[0].curiosita
                 }
                 );
 
@@ -285,7 +356,8 @@ export default class Login extends Component {
             })
         }
       }).catch((error) => {
-        console.error(error);
+        //console.log(error);
+        this.showTimeoutError(error)
       });
   }
 
@@ -297,11 +369,31 @@ const styles = StyleSheet.create({
 
   view: {
 
-    marginTop: '20%',
-    width: '50%',
+    marginTop: '10%',
+    // width: '50%',
     // alignItems: 'center',
     // justifyContent: 'center',
     alignSelf: 'center',
+  },
+
+  read: {
+    alignSelf: 'center',
+    marginTop: "10%",
+
+  },
+  loginButtons: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+
+  },
+  space: {
+    marginHorizontal: 30
+  },
+  touchable: {
+    /*
+    borderRadius:40,
+//    backgroundColor: '#ee6e73',                                    
+borderWidth:1,*/
   },
   login: {
     // marginBottom: Dimensions.get('window').width / 2,
@@ -312,5 +404,13 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     fontSize: 30
 
+  }, image: {
+    width: 10,
+    height: 10
+  }, info: {
+
+    position: 'absolute',
+    bottom: 200,
+    right: 15,
   }
 });
