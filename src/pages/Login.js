@@ -64,13 +64,28 @@ export default class Login extends Component {
         </Text>
 
           </TouchableOpacity>
+
+<View style={styles.login}>
+            <TouchableOpacity 
+            style={{ alignSelf: "center", marginTop:50 }}
+            // onPress={() => this.showSerial()}
+            onPress={() => this.setState({ modalVisible: true })}
+
+          >
+            <Image
+              source={require('../img/login.png')}
+            />
+
+           
+                      </TouchableOpacity>
+                      </View>
         </View>
 
         <View style={styles.info}>
 
           <TouchableOpacity
-            // onPress={() => this.showSerial()}
-            onPress={() => this.setState({ modalVisible: true })}
+             onPress={() => this.showSerial()}
+            //onPress={() => this.setState({ modalVisible: true })}
 
           >
             <Image
@@ -81,7 +96,7 @@ export default class Login extends Component {
         </View>
 
         <Modal visible={this.state.modalVisible}
-          onRequestClose={() => this.setState({ modalVisible: true })}
+          onRequestClose={() => {}}
           animationType={"fade"}
           transparent={false}
         >
@@ -210,6 +225,7 @@ export default class Login extends Component {
 
         } else {
 
+          this.setState({ modalVisible: false })
 
           response.json()
             .then((responseJson) => {
@@ -232,7 +248,6 @@ export default class Login extends Component {
                  console.log(responseJson[0].cronaca)
                  console.log(responseJson[0].spettacolo)
                  console.log(responseJson[0].curiosita)*/
-
 
                 this.props.navigation.navigate('Home', {
                   // password: responseJson[0].password,
@@ -313,9 +328,11 @@ export default class Login extends Component {
             });
 
         } else {
+          this.setState({ modalVisible: false })
 
           response.json()
             .then((responseJson) => {
+                 this.setState({ modalVisible: false })
 
               //console.log(responseJson[0].email)
               //  this.setState({ user: responseJson });
@@ -397,6 +414,9 @@ borderWidth:1,*/
   },
   login: {
     // marginBottom: Dimensions.get('window').width / 2,
+    position: 'absolute',
+    bottom: 190,
+    right: 600,
   },
   res: {
     color: "green",
@@ -407,10 +427,11 @@ borderWidth:1,*/
   }, image: {
     width: 10,
     height: 10
-  }, info: {
-
+  }, 
+  info: {
     position: 'absolute',
-    bottom: 200,
+    bottom: 190, 
     right: 15,
-  }
+  },
+  
 });

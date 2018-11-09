@@ -1,6 +1,8 @@
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Journal from './src/pages/Journal';
+import PDFJournal from './src/pages/PDFJournal';
+
 
 
 /*import { YellowBox } from 'react-native';
@@ -14,9 +16,13 @@ export const baseUrl = "http://192.168.137.1:8000/";
 //export const baseUrl = "http://drink-web.eu:8000/";
 
 export const loginurl = "/api/login";
-export const homeurl = "/api/home";
+export const homeurlweb = "/api/homeweb";
+export const homeurlpdf = "/api/homepdf";
 
-export const readjournalurl = "/api/readjournals";
+
+export const readwebjournalurl = "/api/readwebjournals";
+export const readpdfjournalurl = "/api/readpdfjournals";
+
 
 
 export default createStackNavigator(
@@ -24,7 +30,8 @@ export default createStackNavigator(
 
     Login: Login,
     Home: Home,
-    Journal: Journal
+    Journal: Journal,
+    PDFJournal: PDFJournal
 
   },
 

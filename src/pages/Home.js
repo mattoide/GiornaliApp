@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout';
 
 
-import { baseUrl, loginurl, readjournalurl } from '../../App';
+import { baseUrl, loginurl, readwebjournalurl, readpdfjournalurl, homeurlweb, homeurlpdf } from '../../App';
 
 
 
@@ -30,6 +30,7 @@ export default class Home extends Component {
             email: '',
             password: '',
             fetchTimeoutTime: 10000,
+            journaltype: 0,
 
             channels: {
 
@@ -96,6 +97,10 @@ export default class Home extends Component {
         this.props.navigation.navigate('Journal', { journal: journal });
     }
 
+    readPDFJournal(journal) {
+        this.props.navigation.navigate('PDFJournal', { journal: journal });
+    }
+
     componentDidMount() {
 
 
@@ -126,7 +131,28 @@ export default class Home extends Component {
 
     }
 
+    getweb() {
+        this.setState({ journaltype: 0 });
+        this.refreshamiweb()
+
+    }
+
+    getpdf() {
+        this.setState({ journaltype: 1 });
+        this.refreshamipdf()
+
+
+    }
+
     refreshami() {
+
+        if (this.state.journaltype == 0)
+            this.refreshamiweb();
+            else
+            this.refreshamipdf();
+
+    }
+    refreshamiweb() {
 
         try {
 
@@ -134,9 +160,30 @@ export default class Home extends Component {
              this.refresh();*/
             if (this.state.email != "") {
                 this.login();
-                this.refresh();
+                this.refreshweb();
             } else {
-                this.refreshbyid();
+                this.refreshbyidweb();
+
+            }
+
+
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+
+    refreshamipdf() {
+
+        try {
+
+            /* this.login();
+             this.refresh();*/
+            if (this.state.email != "") {
+                this.login();
+                this.refreshpdf();
+            } else {
+                this.refreshbyidwebpdf();
 
             }
 
@@ -152,69 +199,63 @@ export default class Home extends Component {
     //  renderItem = ({ item, index }) => {
     renderItem = (item) => {
 
+        let journ;
+
+        if (this.state.journaltype == 0) {
+            journ = <TouchableOpacity
+                onPress={() => this.readJournal(item.url)}
+            >
+
+                <CardView
+                    cardElevation={2}
+                    cardMaxElevation={2}
+                    cornerRadius={5}
+                    height={130}
+                    marginTop={2}
+                    cornerOverlap={true}
+                >
+
+
+                    <Image
+                        style={styles.image}
+                        source={{ uri: baseUrl + "files/" + item.file }}
+                    />
+
+                </CardView>
+            </TouchableOpacity>
+
+        } else {
+
+            journ = <TouchableOpacity
+                onPress={() => this.readPDFJournal(item.file)}
+            >
+
+                <CardView
+                    cardElevation={2}
+                    cardMaxElevation={2}
+                    cornerRadius={5}
+                    height={130}
+                    marginTop={2}
+                    cornerOverlap={true}
+                >
+
+
+                    <Image
+                        style={styles.image}
+                        source={{ uri: baseUrl + "files/" + item.file }}
+                    />
+
+                </CardView>
+            </TouchableOpacity>
+        }
+
         return (
 
 
             <View >
 
 
-
-
-                <TouchableOpacity
-                    onPress={() => this.readJournal(item.url)}
-                >
-
-                    <CardView
-                        cardElevation={2}
-                        cardMaxElevation={2}
-                        cornerRadius={5}
-                        height={130}
-                        marginTop={2}
-                        cornerOverlap={true}
-                    >
-
-
-                        <Image
-                            style={styles.image}
-                            source={{ uri: baseUrl + "images/" + item.image }}
-                        />
-
-
-                        {/* 
-                    <Text>
-                        Nome:
-                                <Text style={{ fontWeight: 'bold' }}>
-                            {" " + item.name}
-                        </Text>
-                    </Text>
-
-
-
-
-                    <Text>
-                        Descrizione:
-                <Text style={{ fontWeight: 'bold' }}>
-                            {" " + item.description}
-                        </Text>
-                    </Text>
-
-
-
-
-            
-
-                    <Text>
-                        Link:
-                <Text style={{ fontWeight: 'bold' }}>
-                            {" " + item.url}
-                        </Text>
-                    </Text>
-
-*/}
-
-                    </CardView>
-                </TouchableOpacity>
-
+{journ}
 
             </View>
 
@@ -280,13 +321,13 @@ export default class Home extends Component {
 
 
                         <Button
-                            onPress={() => console.log("pressed")}
+                            onPress={() => this.getweb()}
                             title=" GIORNALI WEB "
                             color="#252523"
                         />
 
                         <Button
-                            onPress={() => console.log("pressed")}
+                            onPress={() => this.getpdf()}
                             title=" GIORNALI SFOGLIABILI "
                             color="#252523"
                         />
@@ -346,24 +387,23 @@ export default class Home extends Component {
     }
 
 
-    refreshbyid() {
+    refreshbyidweb() {
 
         // return fetch(baseUrl + readjournalurl, {
-        return fetchTimeout(baseUrl + readjournalurl, {
+        return fetchTimeout(baseUrl + readwebjournalurl, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-             body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
-           // body: "deviceid=" + "aaa",
+            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+            // body: "deviceid=" + "aaa",
 
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
-                console.log(response.status)
                 if (response.status != 200) {
 
                     response.json().then(
@@ -408,7 +448,7 @@ export default class Home extends Component {
 
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
-                                        image: this.state.journals[i].image,
+                                        file: this.state.journals[i].file,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -427,12 +467,99 @@ export default class Home extends Component {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
+                this.setState({ filteredJournals: [] });
+
             });
     }
 
-    refresh() {
+    refreshbyidwebpdf() {
 
-        return fetchTimeout(baseUrl + "api/home", {
+        // return fetch(baseUrl + readjournalurl, {
+        return fetchTimeout(baseUrl + readpdfjournalurl, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+            // body: "deviceid=" + "aaa",
+
+
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
+
+            .then((response) => {
+
+                if (response.status != 200) {
+
+                    response.json().then(
+
+                        (responseJson) => {
+
+                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
+                        });
+
+                    this.setState({ filteredJournals: [] });
+
+
+                } else {
+
+                    response.json()
+                        .then((responseJson) => {
+
+                            if (responseJson.journals.length <= 0) {
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
+                                );
+
+                                this.setState({ filteredJournals: [] });
+
+                            } else {
+
+                                var list = responseJson.journals;
+
+                                /*for(let i = 0; i < list.length; i++){
+                  
+                                  if(list[i].image == "null"){
+                                    list[i].image = "noimg.jpg";
+                                  }
+                  
+                                }*/
+
+                                this.setState({ journals: list });
+
+
+                                var filtJourn = [];
+
+                                for (var i = 0; i < this.state.journals.length; i++) {
+
+                                    filtJourn.push({
+                                        name: this.state.journals[i].name,
+                                        file: this.state.journals[i].file,
+                                        cronaca: this.state.journals[i].cronaca,
+                                        curiosita: this.state.journals[i].curiosita,
+                                        description: this.state.journals[i].description,
+                                        politica: this.state.journals[i].politica,
+                                        spettacolo: this.state.journals[i].spettacolo,
+                                        sport: this.state.journals[i].sport,
+                                        url: this.state.journals[i].url
+                                    });
+
+                                }
+                                this.setState({ filteredJournals: filtJourn });
+
+                            }
+                        })
+                }
+            }).catch((error) => {
+                //console.log(error);
+                this.showTimeoutError(error)
+                this.setState({ filteredJournals: [] });
+
+            });
+    }
+
+    refreshweb() {
+
+        return fetchTimeout(baseUrl + homeurlweb, {
 
             method: 'POST',
             headers: {
@@ -492,7 +619,7 @@ export default class Home extends Component {
                                 for (var i = 0; i < this.state.journals.length; i++) {
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
-                                        image: this.state.journals[i].image,
+                                        file: this.state.journals[i].file,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -511,6 +638,94 @@ export default class Home extends Component {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
+                this.setState({ filteredJournals: [] });
+
+            });
+    }
+
+    refreshpdf() {
+
+        return fetchTimeout(baseUrl + homeurlpdf, {
+
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: "sport=" + this.state.channels.sport + "&" + "politica=" + this.state.channels.politica + "&" +
+                "curiosita=" + this.state.channels.curiosita + "&" + "spettacolo=" + this.state.channels.spettacolo + "&" +
+                "cronaca=" + this.state.channels.cronaca + "&" + "email=" + this.state.email // <-- Post parameters
+
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
+
+            .then((response) => {
+
+                if (response.status != 200) {
+
+                    response.json().then(
+
+                        (obj) => {
+
+                            ToastAndroid.showWithGravity(
+                                obj.resp,
+                                ToastAndroid.LONG,
+                                ToastAndroid.CENTER
+                            );
+
+                        });
+
+                    this.setState({ filteredJournals: [] });
+
+
+                } else {
+
+                    response.json()
+                        .then((responseJson) => {
+                            if (responseJson.journals.length <= 0) {
+
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+
+                                this.setState({ filteredJournals: [] });
+
+                            } else {
+
+                                var list = responseJson.journals;
+
+                                /*for(let i = 0; i < list.length; i++){
+                  
+                                  if(list[i].image == "null"){
+                                    list[i].image = "noimg.jpg";
+                                  }
+                  
+                                }*/
+
+                                this.setState({ journals: list });
+
+                                var filtJourn = [];
+                                for (var i = 0; i < this.state.journals.length; i++) {
+                                    filtJourn.push({
+                                        name: this.state.journals[i].name,
+                                        file: this.state.journals[i].file,
+                                        cronaca: this.state.journals[i].cronaca,
+                                        curiosita: this.state.journals[i].curiosita,
+                                        description: this.state.journals[i].description,
+                                        politica: this.state.journals[i].politica,
+                                        spettacolo: this.state.journals[i].spettacolo,
+                                        sport: this.state.journals[i].sport,
+                                        url: this.state.journals[i].url
+                                    });
+
+                                }
+                                this.setState({ filteredJournals: filtJourn });
+
+                            }
+                        })
+                }
+            }).catch((error) => {
+                //console.log(error);
+                this.showTimeoutError(error)
+                this.setState({ filteredJournals: [] });
+
             });
     }
 
@@ -600,6 +815,8 @@ export default class Home extends Component {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
+                this.setState({ filteredJournals: [] });
+
             });
     }
 
