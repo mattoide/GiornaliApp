@@ -218,7 +218,7 @@ export default class Home extends Component {
 
                     <Image
                         style={styles.image}
-                        source={{ uri: baseUrl + "files/" + item.file }}
+                        source={{ uri: baseUrl + "files/" + item.image }}
                     />
 
                 </CardView>
@@ -242,7 +242,7 @@ export default class Home extends Component {
 
                     <Image
                         style={styles.image}
-                        source={{ uri: baseUrl + "files/" + item.file }}
+                        source={{ uri: baseUrl + "files/" + item.image }}
                     />
 
                 </CardView>
@@ -448,7 +448,7 @@ export default class Home extends Component {
 
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
-                                        file: this.state.journals[i].file,
+                                        image: this.state.journals[i].image,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -534,6 +534,8 @@ export default class Home extends Component {
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
                                         file: this.state.journals[i].file,
+                                        image: this.state.journals[i].image,
+
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -619,7 +621,7 @@ export default class Home extends Component {
                                 for (var i = 0; i < this.state.journals.length; i++) {
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
-                                        file: this.state.journals[i].file,
+                                        image: this.state.journals[i].image,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -706,6 +708,7 @@ export default class Home extends Component {
                                     filtJourn.push({
                                         name: this.state.journals[i].name,
                                         file: this.state.journals[i].file,
+                                        image: this.state.journals[i].image,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,

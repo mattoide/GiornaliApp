@@ -48,30 +48,29 @@ export default class Journal extends Component {
 
             <WebView
 
+                source={{ uri: journal }}
+                ref={(webView) => { this.webView.ref = webView; }}
+                onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
+                style={{ marginTop: 20, flex: 1 }}
 
-            source={{ uri: journal }}
-            ref={(webView) => { this.webView.ref = webView; }}
-            onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
-            style={{ marginTop: 20, flex: 1 }}
-
-        />
-        /*   <View style={{ flex: 1 }}>
-
-             <Button
-                            onPress={() => {}}
-                            title=" GIORNALI WEB "
-                            color="#252523"
-                        />
-                <WebView
-
-
-                    source={{ uri: journal }}
-                    ref={(webView) => { this.webView.ref = webView; }}
-                    onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
-                    style={{ marginTop: 20, flex: 1 }}
-
-                />
-            </View> */
+            />
+            /*   <View style={{ flex: 1 }}>
+    
+                 <Button
+                                onPress={() => {}}
+                                title=" GIORNALI WEB "
+                                color="#252523"
+                            />
+                    <WebView
+    
+    
+                        source={{ uri: journal }}
+                        ref={(webView) => { this.webView.ref = webView; }}
+                        onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
+                        style={{ marginTop: 20, flex: 1 }}
+    
+                    />
+                </View> */
         );
     }
 }

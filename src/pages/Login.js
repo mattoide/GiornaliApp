@@ -22,7 +22,7 @@ export default class Login extends Component {
     };
   }
   showSerial() {
-
+console.log(DeviceInfo.getUniqueID())
     ToastAndroid.showWithGravity(
      // DeviceInfo.getSerialNumber(),
      DeviceInfo.getUniqueID(),

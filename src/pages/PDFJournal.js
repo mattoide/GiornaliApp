@@ -26,8 +26,8 @@ export default class PDFJournal extends Component {
         var a = this.props.navigation.getParam('journal', '');
         //const source = {uri:'http://192.168.137.1:8000/files/dio@mattino.pdf', cache:true};
        // const source = {uri: baseUrl + "files/" + this.props.navigation.getParam('journal', ''), cache:true};
-        const source = {uri:baseUrl + "files/" + a, cache:true}; 
-
+        const source = {uri:baseUrl + "files/" + a, cache:false}; 
+console.log(source)
         
 
         return (
@@ -44,7 +44,7 @@ export default class PDFJournal extends Component {
                             console.log(error);
                         }}
                         style={styles.pdf}/>
-                </View>
+                </View> 
             );
     }
 }
