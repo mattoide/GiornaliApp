@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard } from 'react-native';
 import SearchBar from 'react-native-searchbar';
 import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
@@ -102,7 +102,6 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-
 
         /* this.setState({
              channels:{
@@ -292,6 +291,7 @@ export default class Home extends Component {
             },
             [4, 2, 'tree'],
         ];
+        Keyboard.dismiss;
 
         return (
 
@@ -870,7 +870,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
     }, bannerbar: {
-        //flex: 0.1,
+        flex: 0.15,
         flexDirection: 'row',
         backgroundColor: 'blue',
         justifyContent: 'flex-start',
