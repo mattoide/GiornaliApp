@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
 import SearchBar from 'react-native-searchbar';
 import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
@@ -31,6 +31,7 @@ export default class Home extends Component {
             password: '',
             fetchTimeoutTime: 10000,
             journaltype: 0,
+            banner: '',
 
             channels: {
 
@@ -291,8 +292,16 @@ export default class Home extends Component {
             },
             [4, 2, 'tree'],
         ];
-        Keyboard.dismiss;
 
+        let banner;
+        if(this.state.banner !=''){
+            banner =  <Image
+            style={styles.imagebanner}
+            source={{ uri: baseUrl + "files/" + this.state.banner }}
+        />
+        } else {
+            
+        }
         return (
 
 
@@ -355,8 +364,8 @@ export default class Home extends Component {
 
                 <View style={styles.bannerbar}>
 
-                    <Text> BANNER</Text>
-
+                   {/* <Text> BANNER</Text>*/}
+                   {banner}
 
                 </View>
 
@@ -413,6 +422,8 @@ export default class Home extends Component {
                             ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
 
+                    this.setState({banner: ''});
+
                     this.setState({ filteredJournals: [] });
 
 
@@ -420,6 +431,7 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
+                            this.setState({banner: responseJson[0].banner});
 
                             if (responseJson.journals.length <= 0) {
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
@@ -497,6 +509,7 @@ export default class Home extends Component {
 
                             ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
+                        this.setState({banner: ''});
 
                     this.setState({ filteredJournals: [] });
 
@@ -505,6 +518,7 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
+                            this.setState({banner: responseJson[0].banner});
 
                             if (responseJson.journals.length <= 0) {
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
@@ -576,6 +590,8 @@ export default class Home extends Component {
 
             .then((response) => {
 
+            
+
                 if (response.status != 200) {
 
                     response.json().then(
@@ -589,6 +605,7 @@ export default class Home extends Component {
                             );
 
                         });
+                        this.setState({banner: ''});
 
                     this.setState({ filteredJournals: [] });
 
@@ -597,6 +614,8 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
+                            this.setState({banner: responseJson[0].banner});
+//console.log(this.state.banner)
                             if (responseJson.journals.length <= 0) {
 
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
@@ -633,6 +652,7 @@ export default class Home extends Component {
 
                                 }
                                 this.setState({ filteredJournals: filtJourn });
+                                
 
                             }
                         })
@@ -675,6 +695,7 @@ export default class Home extends Component {
                             );
 
                         });
+                        this.setState({banner: ''});
 
                     this.setState({ filteredJournals: [] });
 
@@ -683,6 +704,8 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
+                            this.setState({banner: responseJson[0].banner});
+
                             if (responseJson.journals.length <= 0) {
 
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
@@ -750,8 +773,7 @@ export default class Home extends Component {
             .then((response) => {
 
 
-
-                /* response.text().then(
+            /*     response.text().then(
  
                      (obj) => {
                         
@@ -782,6 +804,8 @@ export default class Home extends Component {
 
 
                         });
+                        this.setState({banner: ''});
+
                     this.setState({ filteredJournals: [] });
 
                 } else {
@@ -872,7 +896,7 @@ const styles = StyleSheet.create({
     }, bannerbar: {
         flex: 0.15,
         flexDirection: 'row',
-        backgroundColor: 'blue',
+        backgroundColor: '#252523',
         justifyContent: 'flex-start',
         marginBottom: 10,
 
@@ -890,6 +914,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         flex: 1,
         margin: 10
+    },
+    imagebanner:{
+        width: Dimensions.get('window').width,
+        height: 60
     },
     image: {
         width: 250,

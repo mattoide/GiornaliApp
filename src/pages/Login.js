@@ -395,8 +395,8 @@ const styles = StyleSheet.create({
 
   read: {
     alignSelf: 'center',
-    marginTop: "10%",
-
+    marginTop: "5%",
+ 
   },
   loginButtons: {
     alignSelf: 'center',
@@ -415,8 +415,8 @@ borderWidth:1,*/
   login: {
     // marginBottom: Dimensions.get('window').width / 2,
     position: 'absolute',
-    bottom: 190,
-    right: 600,
+    bottom: 250,
+    right: 580, 
   },
   res: {
     color: "green",
@@ -430,7 +430,7 @@ borderWidth:1,*/
   }, 
   info: {
     position: 'absolute',
-    bottom: 190, 
+    bottom: 250, 
     right: 15,
   },
   
