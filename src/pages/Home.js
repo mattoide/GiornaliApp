@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
+import { NetInfo, StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
 import SearchBar from 'react-native-searchbar';
 import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
 import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout';
+
+
 
 
 import { baseUrl, loginurl, readwebjournalurl, readpdfjournalurl, homeurlweb, homeurlpdf, readpersonalurl } from '../../App';
@@ -95,6 +97,7 @@ export default class Home extends Component {
 
 
     readJournal(journal) {
+
         this.props.navigation.navigate('Journal', { journal: journal });
     }
 
@@ -110,6 +113,15 @@ export default class Home extends Component {
         this.props.navigation.navigate('Journal', { journal: url });
 
     }
+    showNoInternetError() {
+
+        ToastAndroid.showWithGravity(
+          "Nessuna connessoine ad internet",
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER
+        );
+    
+      }
 
     componentDidMount() {
 
@@ -128,25 +140,27 @@ export default class Home extends Component {
 
     getweb() {
         this.setState({ journaltype: 0 });
-        this.refreshamiweb()
+        this.refreshami()
 
     }
 
     getpdf() {
         this.setState({ journaltype: 1 });
-        this.refreshamipdf()
+        this.refreshami()
 
 
     }
     getpersonal() {
         this.setState({ journaltype: 2 });
-        this.refreshamipersonal()
+        this.refreshami()
 
 
     }
 
     refreshami() {
-
+NetInfo.isConnected.fetch().then(isConnected => {
+      if(isConnected)
+      {
         if (this.state.journaltype == 0){
             this.refreshamiweb();
          } else if(this.state.journaltype == 1) {
@@ -155,6 +169,11 @@ export default class Home extends Component {
             this.refreshamipersonal();
 
          }
+        } else {
+          this.showNoInternetError();
+              }
+            });
+       
 
     }
     refreshamiweb() {
@@ -344,10 +363,12 @@ export default class Home extends Component {
         } else {
 
         }
+
+        
         return (
 
-
             <View style={styles.generalbar}>
+
                 <View style={styles.topbar}>
 
                     <View style={styles.searchbar}>

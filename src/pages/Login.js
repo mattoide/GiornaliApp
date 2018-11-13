@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View, Button, StyleSheet, Text, ToastAndroid, Image, TouchableOpacity, Modal } from 'react-native';
+import { NetInfo, TextInput, View, Button, StyleSheet, Text, ToastAndroid, Image, TouchableOpacity, Modal } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout'
@@ -22,10 +22,44 @@ export default class Login extends Component {
     };
   }
   showSerial() {
-console.log(DeviceInfo.getUniqueID())
+    console.log(DeviceInfo.getUniqueID())
     ToastAndroid.showWithGravity(
-     // DeviceInfo.getSerialNumber(),
-     DeviceInfo.getUniqueID(),
+      // DeviceInfo.getSerialNumber(),
+      DeviceInfo.getUniqueID(),
+      ToastAndroid.LONG,
+      ToastAndroid.CENTER
+    );
+
+  }
+
+  readJournals() {
+
+
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        this.props.navigation.navigate('Home')
+      } else {
+        this.showNoInternetError();
+      }
+    });
+  }
+
+  login() {
+
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        this.loginapi()
+      } else {
+        this.showNoInternetError();
+      }
+    });
+
+  }
+
+  showNoInternetError() {
+
+    ToastAndroid.showWithGravity(
+      "Nessuna connessoine ad internet",
       ToastAndroid.LONG,
       ToastAndroid.CENTER
     );
@@ -43,17 +77,17 @@ console.log(DeviceInfo.getUniqueID())
 
 
 
-  render() {  
+  render() {
 
 
     return (
       <View>
-        
+
         <View style={styles.read}>
 
           <TouchableOpacity
             style={styles.touchable}
-            onPress={() => this.props.navigation.navigate('Home')}
+            onPress={() => this.readJournals()}
           >
             <Image
               source={require('../img/newspaper.png')}
@@ -65,27 +99,27 @@ console.log(DeviceInfo.getUniqueID())
 
           </TouchableOpacity>
 
-<View style={styles.login}>
-            <TouchableOpacity 
-            style={{ alignSelf: "center", marginTop:50 }}
-            // onPress={() => this.showSerial()}
-            onPress={() => this.setState({ modalVisible: true })}
+          <View style={styles.login}>
+            <TouchableOpacity
+              style={{ alignSelf: "center", marginTop: 50 }}
+              // onPress={() => this.showSerial()}
+              onPress={() => this.setState({ modalVisible: true })}
 
-          >
-            <Image
-              source={require('../img/login.png')}
-            />
+            >
+              <Image
+                source={require('../img/login.png')}
+              />
 
-           
-                      </TouchableOpacity>
-                      </View>
+
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.info}>
 
           <TouchableOpacity
-             onPress={() => this.showSerial()}
-            //onPress={() => this.setState({ modalVisible: true })}
+            onPress={() => this.showSerial()}
+          //onPress={() => this.setState({ modalVisible: true })}
 
           >
             <Image
@@ -96,7 +130,7 @@ console.log(DeviceInfo.getUniqueID())
         </View>
 
         <Modal visible={this.state.modalVisible}
-          onRequestClose={() => {}}
+          onRequestClose={() => { }}
           animationType={"fade"}
           transparent={false}
         >
@@ -169,7 +203,9 @@ console.log(DeviceInfo.getUniqueID())
   }
 
 
-  readJournals() {
+  readJournalsapi() {
+
+
 
     return fetchTimeout(baseUrl + homeurl, {
 
@@ -271,9 +307,15 @@ console.log(DeviceInfo.getUniqueID())
         //console.log(error);
         this.showTimeoutError(error)
       });
+
+
   }
 
-  login() {
+
+
+
+
+  loginapi() {
 
     return fetchTimeout(baseUrl + loginurl, {
 
@@ -332,7 +374,7 @@ console.log(DeviceInfo.getUniqueID())
 
           response.json()
             .then((responseJson) => {
-                 this.setState({ modalVisible: false })
+              this.setState({ modalVisible: false })
 
               //console.log(responseJson[0].email)
               //  this.setState({ user: responseJson });
@@ -376,6 +418,8 @@ console.log(DeviceInfo.getUniqueID())
         //console.log(error);
         this.showTimeoutError(error)
       });
+
+
   }
 
 }
@@ -396,7 +440,7 @@ const styles = StyleSheet.create({
   read: {
     alignSelf: 'center',
     marginTop: "5%",
- 
+
   },
   loginButtons: {
     alignSelf: 'center',
@@ -416,7 +460,7 @@ borderWidth:1,*/
     // marginBottom: Dimensions.get('window').width / 2,
     position: 'absolute',
     bottom: 250,
-    right: 580, 
+    right: 580,
   },
   res: {
     color: "green",
@@ -427,11 +471,11 @@ borderWidth:1,*/
   }, image: {
     width: 10,
     height: 10
-  }, 
+  },
   info: {
     position: 'absolute',
-    bottom: 250, 
+    bottom: 250,
     right: 15,
   },
-  
+
 });
