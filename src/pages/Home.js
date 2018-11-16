@@ -639,7 +639,6 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
                                 }
                                 this.setState({ filteredJournals: filtJourn });
-console.log(this.state.filteredJournals)
                             }
                         })
                 }
