@@ -292,7 +292,15 @@ export default class Login extends Component {
                   politica: responseJson[0].politica,
                   cronaca: responseJson[0].cronaca,
                   spettacolo: responseJson[0].spettacolo,
-                  curiosita: responseJson[0].curiosita
+                  curiosita: responseJson[0].curiosita,
+                  economia: responseJson[0].economia,
+                  cultura: responseJson[0].cultura,
+                  tecnologia: responseJson[0].tecnologia,
+                  scienze: responseJson[0].scienze,
+                  gossip: responseJson[0].gossip,
+                  finanza: responseJson[0].finanza,
+                  ambiente: responseJson[0].ambiente,
+                  varie: responseJson[0].varie,
                 }
                 );
 
@@ -401,7 +409,15 @@ export default class Login extends Component {
                   politica: responseJson[0].politica,
                   cronaca: responseJson[0].cronaca,
                   spettacolo: responseJson[0].spettacolo,
-                  curiosita: responseJson[0].curiosita
+                  curiosita: responseJson[0].curiosita,
+                  economia: responseJson[0].economia,
+                  cultura: responseJson[0].cultura,
+                  tecnologia: responseJson[0].tecnologia,
+                  scienze: responseJson[0].scienze,
+                  gossip: responseJson[0].gossip,
+                  finanza: responseJson[0].finanza,
+                  ambiente: responseJson[0].ambiente,
+                  varie: responseJson[0].varie,
                 }
                 );
 

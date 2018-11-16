@@ -625,12 +625,21 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                         politica: this.state.journals[i].politica,
                                         spettacolo: this.state.journals[i].spettacolo,
                                         sport: this.state.journals[i].sport,
+                                        economia: this.state.journals[i].economia,
+                                        cultura: this.state.journals[i].cultura,
+                                        tecnologia: this.state.journals[i].tecnologia,
+                                        scienze: this.state.journals[i].scienze,
+                                        gossip: this.state.journals[i].gossip,
+                                        finanza: this.state.journals[i].finanza,
+                                        ambiente:this.state.journals[i].ambiente,
+                                        varie: this.state.journals[i].varie,
+                                        
                                         url: this.state.journals[i].url
                                     });
 
                                 }
                                 this.setState({ filteredJournals: filtJourn });
-
+console.log(this.state.filteredJournals)
                             }
                         })
                 }
@@ -983,12 +992,22 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                         name: this.state.journals[i].name,
                                         file: this.state.journals[i].file,
                                         image: this.state.journals[i].image,
+
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
                                         politica: this.state.journals[i].politica,
                                         spettacolo: this.state.journals[i].spettacolo,
                                         sport: this.state.journals[i].sport,
+                                        economia: this.state.journals[i].economia,
+                                        cultura: this.state.journals[i].cultura,
+                                        tecnologia: this.state.journals[i].tecnologia,
+                                        scienze: this.state.journals[i].scienze,
+                                        gossip: this.state.journals[i].gossip,
+                                        finanza: this.state.journals[i].finanza,
+                                        ambiente:this.state.journals[i].ambiente,
+                                        varie: this.state.journals[i].varie,
+                                        
                                         url: this.state.journals[i].url
                                     });
 
