@@ -227,7 +227,7 @@ export default class Home extends Component {
                  this.refreshbyidwebpdf();
 
              }*/
-            this.refreshbyipersonal();
+            this.refreshbyidpersonal();
 
         } catch (e) {
             console.log(e)
@@ -273,7 +273,9 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                    height={130}
+                   // height={130}
+                     //width={384}
+                     height={132}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -350,7 +352,7 @@ export default class Home extends Component {
                             placeholder={'cerca...'}
                             heightAdjust={-35}
                             handleResults={this._handleResults}
-                            showOnLoad
+                            //showOnLoad
                         />
                     </View>
 
@@ -465,7 +467,7 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
-
+console.log(responseJson)
                             this.setState({banner: responseJson[0].banner});
                             this.setState({nickname: responseJson[0].nickname});
 
@@ -888,7 +890,7 @@ export default class Home extends Component {
     }
 
 
-    refreshbyipersonal() {
+    refreshbyidpersonal() {
 
         // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + readpersonalurl, {
@@ -1056,8 +1058,10 @@ const
             height: 60
         },
         image: {
-            width: 250,
-            height: 130
+            // width: 250,
+            // height: 130
+            width: 384,
+            height: 132
         },
         text: {
             color: 'red'
