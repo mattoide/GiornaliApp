@@ -4,6 +4,7 @@ import { NetInfo, TextInput, View, Button, StyleSheet, Text, ToastAndroid, Image
 import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout'
 
+
 import { baseUrl, loginurl, homeurl } from '../../App';
 
 
@@ -81,6 +82,7 @@ export default class Login extends Component {
 
 
     return (
+
       <View>
 
         <View style={styles.read}>
@@ -128,6 +130,7 @@ export default class Login extends Component {
 
           </TouchableOpacity>
         </View>
+
 
         <Modal visible={this.state.modalVisible}
           onRequestClose={() => { }}
@@ -197,12 +200,11 @@ export default class Login extends Component {
 
         </Modal>
 
-
       </View>
     );
   }
 
-
+  
   readJournalsapi() {
 
 
@@ -457,6 +459,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: "5%",
 
+    //TODO: togliere
+    flexDirection: 'row'
+
   },
   loginButtons: {
     alignSelf: 'center',
@@ -477,6 +482,10 @@ borderWidth:1,*/
     position: 'absolute',
     bottom: 250,
     right: 580,
+
+    //TODO: togliere
+    flexDirection: 'row',
+
   },
   res: {
     color: "green",

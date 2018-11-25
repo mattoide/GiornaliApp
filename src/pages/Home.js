@@ -1,5 +1,18 @@
-import React, { Component } from 'react';
-import { NetInfo, StyleSheet, Text, View, Button, ToastAndroid, Image, RefreshControl, WebView, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
+import React, {Component} from 'react';
+import {
+    NetInfo,
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    ToastAndroid,
+    Image,
+    RefreshControl,
+    WebView,
+    TouchableOpacity,
+    Keyboard,
+    Dimensions
+} from 'react-native';
 import SearchBar from 'react-native-searchbar';
 import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
@@ -7,13 +20,15 @@ import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout';
 
 
-
-
-import { baseUrl, loginurl, readwebjournalurl, readpdfjournalurl, homeurlweb, homeurlpdf, readpersonalurl } from '../../App';
-
-
-
-
+import {
+    baseUrl,
+    loginurl,
+    readwebjournalurl,
+    readpdfjournalurl,
+    homeurlweb,
+    homeurlpdf,
+    readpersonalurl
+} from '../../App';
 
 
 export default class Home extends Component {
@@ -29,8 +44,9 @@ export default class Home extends Component {
             journals: [],
             filteredJournals: [],
 
-            email: '',
-            password: '',
+            // email: '',
+            // password: '',
+            nickname:'',
             fetchTimeoutTime: 10000,
             journaltype: 0,
             banner: '',
@@ -70,21 +86,10 @@ export default class Home extends Component {
 
     _handleResults(results) {
 
-
-        if (results.length > 0) {
-
-            this.setState({ filteredJournals: results });
-
-
-        } else {
-
-            this.setState({ filteredJournals: this.state.journals });
-
-        }
-
-
-
-
+        if (results.length > 0)
+            this.setState({filteredJournals: results});
+        else
+            this.setState({filteredJournals: this.state.journals});
     }
 
     _handleChangeText(input) {
@@ -97,91 +102,85 @@ export default class Home extends Component {
 
 
     readJournal(journal) {
-
-        this.props.navigation.navigate('Journal', { journal: journal });
+        this.props.navigation.navigate('Journal', {journal: journal});
     }
 
     readPDFJournal(journal) {
-        this.props.navigation.navigate('PDFJournal', { journal: journal });
+        this.props.navigation.navigate('PDFJournal', {journal: journal});
     }
 
     readPersonal(file, url) {
-        if(file != '')
-        this.props.navigation.navigate('PDFJournal', { journal: file });
 
-        if(url != '')
-        this.props.navigation.navigate('Journal', { journal: url });
+        if (file != '')
+            this.props.navigation.navigate('PDFJournal', {journal: file});
 
+        if (url != '')
+            this.props.navigation.navigate('Journal', {journal: url});
     }
+
     showNoInternetError() {
 
         ToastAndroid.showWithGravity(
-          "Nessuna connessoine ad internet",
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER
+            "Nessuna connessoine ad internet",
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER
         );
-    
-      }
+
+    }
 
     componentDidMount() {
 
-            this.state.channels.sport = this.props.navigation.getParam('sport', ''),
+        this.state.channels.sport = this.props.navigation.getParam('sport', ''),
             this.state.channels.politica = this.props.navigation.getParam('politica', ''),
             this.state.channels.cronaca = this.props.navigation.getParam('cronaca', ''),
             this.state.channels.spettacolo = this.props.navigation.getParam('spettacolo', ''),
             this.state.channels.curiosita = this.props.navigation.getParam('curiosita', '')
 
-            this.state.email = this.props.navigation.getParam('email', '')
+        this.state.email = this.props.navigation.getParam('email', '')
 
         this.refreshami();
-
 
     }
 
     getweb() {
-        this.setState({ journaltype: 0 });
-        this.refreshami()
 
+        this.setState({journaltype: 0});
+        this.refreshami()
     }
 
     getpdf() {
-        this.setState({ journaltype: 1 });
+        this.setState({journaltype: 1});
         this.refreshami()
-
-
     }
+
     getpersonal() {
-        this.setState({ journaltype: 2 });
+        this.setState({journaltype: 2});
         this.refreshami()
-
-
     }
 
     refreshami() {
-NetInfo.isConnected.fetch().then(isConnected => {
-      if(isConnected)
-      {
-        if (this.state.journaltype == 0){
-            this.refreshamiweb();
-         } else if(this.state.journaltype == 1) {
-            this.refreshamipdf();
-         } else if (this.state.journaltype == 2) {
-            this.refreshamipersonal();
+        NetInfo.isConnected.fetch().then(isConnected => {
+            if (isConnected) {
+                if (this.state.journaltype == 0) {
+                    this.refreshamiweb();
+                } else if (this.state.journaltype == 1) {
+                    this.refreshamipdf();
+                } else if (this.state.journaltype == 2) {
+                    this.refreshamipersonal();
 
-         }
-        } else {
-          this.showNoInternetError();
-              }
-            });
-       
+                }
+            } else {
+                this.showNoInternetError();
+            }
+        });
+
 
     }
+
     refreshamiweb() {
 
         try {
 
-            /* this.login();
-             this.refresh();*/
             if (this.state.email != "") {
                 this.login();
                 this.refreshweb();
@@ -190,11 +189,9 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
             }
 
-
         } catch (e) {
             console.log(e)
         }
-
     }
 
     refreshamipdf() {
@@ -217,6 +214,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
         }
 
     }
+
     refreshamipersonal() {
 
         try {
@@ -227,11 +225,9 @@ NetInfo.isConnected.fetch().then(isConnected => {
                  this.refreshpdf();
              } else {
                  this.refreshbyidwebpdf();
- 
+
              }*/
-
             this.refreshbyipersonal();
-
 
         } catch (e) {
             console.log(e)
@@ -240,8 +236,6 @@ NetInfo.isConnected.fetch().then(isConnected => {
     }
 
 
-
-    //  renderItem = ({ item, index }) => {
     renderItem = (item) => {
 
         let journ;
@@ -263,13 +257,13 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
                     <Image
                         style={styles.image}
-                        source={{ uri: baseUrl + "files/" + item.image }}
+                        source={{uri: baseUrl + "files/" + item.image}}
                     />
 
                 </CardView>
             </TouchableOpacity>
 
-        } else  if (this.state.journaltype == 1){
+        } else if (this.state.journaltype == 1) {
 
             journ = <TouchableOpacity
                 onPress={() => this.readPDFJournal(item.file)}
@@ -287,7 +281,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
                     <Image
                         style={styles.image}
-                        source={{ uri: baseUrl + "files/" + item.image }}
+                        source={{uri: baseUrl + "files/" + item.image}}
                     />
 
                 </CardView>
@@ -296,32 +290,32 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
 
             journ = <TouchableOpacity
-            onPress={() => this.readPersonal(item.file, item.url)}
-        >
-
-            <CardView
-                cardElevation={2}
-                cardMaxElevation={2}
-                cornerRadius={5}
-                height={130}
-                marginTop={2}
-                cornerOverlap={true}
+                onPress={() => this.readPersonal(item.file, item.url)}
             >
 
+                <CardView
+                    cardElevation={2}
+                    cardMaxElevation={2}
+                    cornerRadius={5}
+                    height={130}
+                    marginTop={2}
+                    cornerOverlap={true}
+                >
 
-                <Image
-                    style={styles.image}
-                    source={{ uri: baseUrl + "files/" + item.image }}
-                />
 
-            </CardView>
-        </TouchableOpacity>
+                    <Image
+                        style={styles.image}
+                        source={{uri: baseUrl + "files/" + item.image}}
+                    />
+
+                </CardView>
+            </TouchableOpacity>
 
         }
 
         return (
 
-            <View >
+            <View>
                 {journ}
             </View>
 
@@ -330,41 +324,18 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
     render() {
 
-        const items = [
-            1337,
-            'janeway',
-            {
-                lots: 'of',
-                different: {
-                    types: 0,
-                    data: false,
-                    that: {
-                        can: {
-                            be: {
-                                quite: {
-                                    complex: {
-                                        hidden: ['gold!'],
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            [4, 2, 'tree'],
-        ];
-
         let banner;
+
         if (this.state.banner != '') {
             banner = <Image
                 style={styles.imagebanner}
-                source={{ uri: baseUrl + "files/" + this.state.banner }}
+                source={{uri: baseUrl + "files/" + this.state.banner}}
             />
         } else {
 
         }
 
-        
+
         return (
 
             <View style={styles.generalbar}>
@@ -375,21 +346,16 @@ NetInfo.isConnected.fetch().then(isConnected => {
                         <SearchBar
                             ref={(ref) => this.searchBar = ref}
                             data={this.state.filteredJournals}
-                            //data={words}
                             hideBack
                             placeholder={'cerca...'}
                             heightAdjust={-35}
                             handleResults={this._handleResults}
-                            // handleChangeText={(input) => this._handleChangeText(input)}
                             showOnLoad
                         />
                     </View>
 
 
-
-
                     <View style={styles.menubar}>
-
 
 
                         <Button
@@ -405,19 +371,20 @@ NetInfo.isConnected.fetch().then(isConnected => {
                         />
 
 
-                        {/*
-                        <Button
-                            onPress={() => this.showSerial()}
-                            title={this.state.email}
-                            color="#252523"
-                        />
-                    */}
+
+
                         <Button
                             onPress={() => this.getpersonal()}
                             title=" PERSONALE "
                             color="#252523"
                         />
 
+
+                        {/*<Button*/}
+                            {/*onPress={() => {}}*/}
+                            {/*title={this.state.nickname}*/}
+                            {/*color="#252523"*/}
+                        {/*/>*/}
 
                         <Button
                             onPress={() => console.log("pressed")}
@@ -439,7 +406,6 @@ NetInfo.isConnected.fetch().then(isConnected => {
                 </View>
 
 
-
                 <View style={styles.cardbar}>
 
 
@@ -458,7 +424,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
                 </View>
 
-            </View >
+            </View>
 
 
         );
@@ -485,42 +451,44 @@ NetInfo.isConnected.fetch().then(isConnected => {
                 if (response.status != 200) {
 
                     response.json().then(
-
                         (responseJson) => {
 
                             ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
 
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
 
                 } else {
 
                     response.json()
                         .then((responseJson) => {
-                            this.setState({ banner: responseJson[0].banner });
+
+                            this.setState({banner: responseJson[0].banner});
+                            this.setState({nickname: responseJson[0].nickname});
+
 
                             if (responseJson.journals.length <= 0) {
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
                                 );
 
-                                this.setState({ filteredJournals: [] });
+                                this.setState({filteredJournals: []});
 
                             } else {
 
                                 var list = responseJson.journals;
 
                                 /*for(let i = 0; i < list.length; i++){
-                  
+
                                   if(list[i].image == "null"){
                                     list[i].image = "noimg.jpg";
                                   }
-                  
+
                                 }*/
 
-                                this.setState({ journals: list });
+                                this.setState({journals: list});
 
 
                                 var filtJourn = [];
@@ -540,7 +508,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                     });
 
                                 }
-                                this.setState({ filteredJournals: filtJourn });
+                                this.setState({filteredJournals: filtJourn});
 
                             }
                         })
@@ -548,7 +516,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -573,41 +541,42 @@ NetInfo.isConnected.fetch().then(isConnected => {
                 if (response.status != 200) {
 
                     response.json().then(
-
                         (responseJson) => {
 
                             ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
 
                 } else {
 
                     response.json()
                         .then((responseJson) => {
-                            this.setState({ banner: responseJson[0].banner });
+                            this.setState({banner: responseJson[0].banner});
+                            this.setState({nickname: responseJson[0].nickname});
+
 
                             if (responseJson.journals.length <= 0) {
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
                                 );
 
-                                this.setState({ filteredJournals: [] });
+                                this.setState({filteredJournals: []});
 
                             } else {
 
                                 var list = responseJson.journals;
 
                                 /*for(let i = 0; i < list.length; i++){
-                  
+
                                   if(list[i].image == "null"){
                                     list[i].image = "noimg.jpg";
                                   }
-                  
+
                                 }*/
 
-                                this.setState({ journals: list });
+                                this.setState({journals: list});
 
 
                                 var filtJourn = [];
@@ -631,21 +600,21 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                         scienze: this.state.journals[i].scienze,
                                         gossip: this.state.journals[i].gossip,
                                         finanza: this.state.journals[i].finanza,
-                                        ambiente:this.state.journals[i].ambiente,
+                                        ambiente: this.state.journals[i].ambiente,
                                         varie: this.state.journals[i].varie,
-                                        
+
                                         url: this.state.journals[i].url
                                     });
 
                                 }
-                                this.setState({ filteredJournals: filtJourn });
+                                this.setState({filteredJournals: filtJourn});
                             }
                         })
                 }
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -668,11 +637,9 @@ NetInfo.isConnected.fetch().then(isConnected => {
             .then((response) => {
 
 
-
                 if (response.status != 200) {
 
                     response.json().then(
-
                         (obj) => {
 
                             ToastAndroid.showWithGravity(
@@ -682,36 +649,36 @@ NetInfo.isConnected.fetch().then(isConnected => {
                             );
 
                         });
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
 
                 } else {
 
                     response.json()
                         .then((responseJson) => {
-                            this.setState({ banner: responseJson[0].banner });
+                            this.setState({banner: responseJson[0].banner});
                             //console.log(this.state.banner)
                             if (responseJson.journals.length <= 0) {
 
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
 
-                                this.setState({ filteredJournals: [] });
+                                this.setState({filteredJournals: []});
 
                             } else {
 
                                 var list = responseJson.journals;
 
                                 /*for(let i = 0; i < list.length; i++){
-                  
+
                                   if(list[i].image == "null"){
                                     list[i].image = "noimg.jpg";
                                   }
-                  
+
                                 }*/
 
-                                this.setState({ journals: list });
+                                this.setState({journals: list});
 
                                 var filtJourn = [];
                                 for (var i = 0; i < this.state.journals.length; i++) {
@@ -728,7 +695,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                     });
 
                                 }
-                                this.setState({ filteredJournals: filtJourn });
+                                this.setState({filteredJournals: filtJourn});
 
 
                             }
@@ -737,7 +704,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -762,7 +729,6 @@ NetInfo.isConnected.fetch().then(isConnected => {
                 if (response.status != 200) {
 
                     response.json().then(
-
                         (obj) => {
 
                             ToastAndroid.showWithGravity(
@@ -772,36 +738,36 @@ NetInfo.isConnected.fetch().then(isConnected => {
                             );
 
                         });
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
 
                 } else {
 
                     response.json()
                         .then((responseJson) => {
-                            this.setState({ banner: responseJson[0].banner });
+                            this.setState({banner: responseJson[0].banner});
 
                             if (responseJson.journals.length <= 0) {
 
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
 
-                                this.setState({ filteredJournals: [] });
+                                this.setState({filteredJournals: []});
 
                             } else {
 
                                 var list = responseJson.journals;
 
                                 /*for(let i = 0; i < list.length; i++){
-                  
+
                                   if(list[i].image == "null"){
                                     list[i].image = "noimg.jpg";
                                   }
-                  
+
                                 }*/
 
-                                this.setState({ journals: list });
+                                this.setState({journals: list});
 
                                 var filtJourn = [];
                                 for (var i = 0; i < this.state.journals.length; i++) {
@@ -819,7 +785,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                     });
 
                                 }
-                                this.setState({ filteredJournals: filtJourn });
+                                this.setState({filteredJournals: filtJourn});
 
                             }
                         })
@@ -827,7 +793,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -851,24 +817,23 @@ NetInfo.isConnected.fetch().then(isConnected => {
 
 
                 /*     response.text().then(
-     
+
                          (obj) => {
-                            
-               
+
+
                              ToastAndroid.showWithGravity(
                                  obj,
                                  ToastAndroid.LONG,
                                  ToastAndroid.CENTER
                              );
-               
+
                console.log(obj)
-               
+
                          });*/
 
                 if (response.status != 200) {
 
                     response.text().then(
-
                         (obj) => {
 
 
@@ -879,11 +844,10 @@ NetInfo.isConnected.fetch().then(isConnected => {
                             );
 
 
-
                         });
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
                 } else {
 
@@ -913,13 +877,12 @@ NetInfo.isConnected.fetch().then(isConnected => {
                             //   } catch (error) { }
 
 
-
                         })
                 }
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -945,42 +908,42 @@ NetInfo.isConnected.fetch().then(isConnected => {
                 if (response.status != 200) {
 
                     response.json().then(
-
                         (responseJson) => {
 
                             ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
                         });
 
-                    this.setState({ banner: '' });
+                    this.setState({banner: ''});
 
-                    this.setState({ filteredJournals: [] });
+                    this.setState({filteredJournals: []});
 
 
                 } else {
 
                     response.json()
                         .then((responseJson) => {
-                            this.setState({ banner: responseJson[0].banner });
+                            this.setState({banner: responseJson[0].banner});
+                            this.setState({nickname: responseJson[0].nickname});
 
                             if (responseJson.journals.length <= 0) {
                                 ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
                                 );
 
-                                this.setState({ filteredJournals: [] });
+                                this.setState({filteredJournals: []});
 
                             } else {
 
                                 var list = responseJson.journals;
 
                                 /*for(let i = 0; i < list.length; i++){
-                  
+
                                   if(list[i].image == "null"){
                                     list[i].image = "noimg.jpg";
                                   }
-                  
+
                                 }*/
 
-                                this.setState({ journals: list });
+                                this.setState({journals: list});
 
 
                                 var filtJourn = [];
@@ -1004,14 +967,14 @@ NetInfo.isConnected.fetch().then(isConnected => {
                                         scienze: this.state.journals[i].scienze,
                                         gossip: this.state.journals[i].gossip,
                                         finanza: this.state.journals[i].finanza,
-                                        ambiente:this.state.journals[i].ambiente,
+                                        ambiente: this.state.journals[i].ambiente,
                                         varie: this.state.journals[i].varie,
-                                        
+
                                         url: this.state.journals[i].url
                                     });
 
                                 }
-                                this.setState({ filteredJournals: filtJourn });
+                                this.setState({filteredJournals: filtJourn});
 
                             }
                         })
@@ -1019,7 +982,7 @@ NetInfo.isConnected.fetch().then(isConnected => {
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
-                this.setState({ filteredJournals: [] });
+                this.setState({filteredJournals: []});
 
             });
     }
@@ -1027,78 +990,77 @@ NetInfo.isConnected.fetch().then(isConnected => {
 }
 
 
+const
+    styles = StyleSheet.create({
 
 
-const styles = StyleSheet.create({
+        generalbar: {
+
+            flex: 1,
+            flexDirection: 'column',
+            backgroundColor: '#11110f',
+            justifyContent: 'space-between',
+
+            // alignItems: 'center',
 
 
-    generalbar: {
+        },
 
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#11110f',
-        justifyContent: 'space-between',
+        topbar: {
+            flex: 0.2,
+            flexDirection: 'row',
+            // backgroundColor: 'green',
+            backgroundColor: '#252523',
+            justifyContent: 'space-between',
+            alignItems: 'center',
 
-        // alignItems: 'center',
+        },
+        menubar: {
+            //flex: 0.2,
 
+            flexDirection: 'row',
+            backgroundColor: '#252523',
+            //backgroundColor: '#f0f0f0',
+            //  justifyContent: 'flex-start',
+            // alignItems: 'center',
+        },
+        searchbar: {
+            // flex: 0.2,
+            flexDirection: 'row',
+            alignItems: 'center',
 
-    },
+        }, bannerbar: {
+            flex: 0.15,
+            flexDirection: 'row',
+            backgroundColor: '#252523',
+            justifyContent: 'flex-start',
+            marginBottom: 10,
 
-    topbar: {
-        flex: 0.2,
-        flexDirection: 'row',
-        // backgroundColor: 'green',
-        backgroundColor: '#252523',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        }, cardbar: {
+            flex: 1,
+            flexDirection: 'column',
+            backgroundColor: '#11110f',
+            justifyContent: 'flex-start',
 
-    },
-    menubar: {
-        //flex: 0.2,
+        }, card: {
 
-        flexDirection: 'row',
-        backgroundColor: '#252523',
-        //backgroundColor: '#f0f0f0',
-        //  justifyContent: 'flex-start',
-        // alignItems: 'center',
-    },
-    searchbar: {
-        // flex: 0.2,
-        flexDirection: 'row',
-        alignItems: 'center',
+            backgroundColor: 'white',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            flex: 1,
+            margin: 10
+        },
+        imagebanner: {
+            width: Dimensions.get('window').width,
+            height: 60
+        },
+        image: {
+            width: 250,
+            height: 130
+        },
+        text: {
+            color: 'red'
+        }
 
-    }, bannerbar: {
-        flex: 0.15,
-        flexDirection: 'row',
-        backgroundColor: '#252523',
-        justifyContent: 'flex-start',
-        marginBottom: 10,
-
-    }, cardbar: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#11110f',
-        justifyContent: 'flex-start',
-
-    }, card: {
-
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        flex: 1,
-        margin: 10
-    },
-    imagebanner: {
-        width: Dimensions.get('window').width,
-        height: 60
-    },
-    image: {
-        width: 250,
-        height: 130
-    },
-    text: {
-        color: 'red'
-    }
-
-});
+    });
