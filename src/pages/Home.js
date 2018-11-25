@@ -204,7 +204,7 @@ export default class Home extends Component {
                 this.login();
                 this.refreshpdf();
             } else {
-                this.refreshbyidwebpdf();
+                this.refreshbyidpdf();
 
             }
 
@@ -224,7 +224,7 @@ export default class Home extends Component {
                  this.login();
                  this.refreshpdf();
              } else {
-                 this.refreshbyidwebpdf();
+                 this.refreshbyidpdf();
 
              }*/
             this.refreshbyidpersonal();
@@ -249,7 +249,9 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                    height={130}
+                  //  height={130}
+                    height={132}
+                    //width={384}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -333,8 +335,18 @@ export default class Home extends Component {
                 style={styles.imagebanner}
                 source={{uri: baseUrl + "files/" + this.state.banner}}
             />
-        } else {
+        }
 
+        let nickname;
+
+        if((this.state.nickname != "") && (this.state.nickname != null)){
+            nickname = <Button
+                onPress={() => {}}
+                title={this.state.nickname}
+                color="#252523"
+
+
+            />
         }
 
 
@@ -382,20 +394,16 @@ export default class Home extends Component {
                         />
 
 
-                        {/*<Button*/}
-                            {/*onPress={() => {}}*/}
-                            {/*title={this.state.nickname}*/}
-                            {/*color="#252523"*/}
-                        {/*/>*/}
-
                         <Button
                             onPress={() => console.log("pressed")}
                             title=" GIOCHI "
                             color="#252523"
                         />
 
-                    </View>
 
+                        {nickname}
+
+                    </View>
 
                 </View>
 
@@ -467,7 +475,6 @@ export default class Home extends Component {
 
                     response.json()
                         .then((responseJson) => {
-console.log(responseJson)
                             this.setState({banner: responseJson[0].banner});
                             this.setState({nickname: responseJson[0].nickname});
 
@@ -523,7 +530,7 @@ console.log(responseJson)
             });
     }
 
-    refreshbyidwebpdf() {
+    refreshbyidpdf() {
 
         // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + readpdfjournalurl, {
@@ -1058,10 +1065,10 @@ const
             height: 60
         },
         image: {
-            // width: 250,
-            // height: 130
-            width: 384,
-            height: 132
+             width: 250,
+             height: 130
+           // width: 384,
+            //height: 132
         },
         text: {
             color: 'red'
