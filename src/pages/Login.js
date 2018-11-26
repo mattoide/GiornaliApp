@@ -16,7 +16,8 @@ import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout'
 
 
-import {baseUrl, loginurl, homeurl, readwebjournalurl} from '../../App';
+import {baseUrl, loginurl, homeurl, readwebjournalurl, getlogo} from '../../App';
+import CardView from "react-native-cardview";
 
 
 export default class Login extends Component {
@@ -28,10 +29,22 @@ export default class Login extends Component {
         this.state = {
             email: '',
             password: '',
+            logo: '',
             modalVisible: false,
             fetchTimeoutTime: 10000,
 
         };
+    }
+
+    componentDidMount() {
+
+        try {
+            this.getLogoUtente();
+            //     console.log("asasa")
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     showSerial() {
@@ -58,6 +71,55 @@ export default class Login extends Component {
             }
         });
     }
+
+
+    getLogoUtente() {
+
+        // return fetch(baseUrl + readjournalurl, {
+        return fetchTimeout(baseUrl + getlogo, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+            // body: "deviceid=" + "aaa",
+
+
+        }, this.state.fetchTimeoutTime, "Il server non risponde")
+
+            .then((response) => {
+                if (response.status != 200) {
+
+                    // response.json().then(
+                    //     (responseJson) => {
+                    //
+                    //         ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
+                    //     });
+
+
+                } else {
+
+                    response.json()
+                        .then((responseJson) => {
+                            // console.log(responseJson)
+                            this.setState({logo: responseJson.resp});
+
+
+                        });
+
+
+                    // console.log(this.state.logo);
+
+
+                }
+            }).catch((error) => {
+                //console.log(error);
+                this.showTimeoutError(error)
+                this.getLogoUtente()
+            });
+    }
+
 
     checkDevice() {
 
@@ -132,12 +194,50 @@ export default class Login extends Component {
 
     render() {
 
+        let logo;
+        let info;
 
+        if (this.state.logo) {
+            logo = <Image
+                style={styles.image}
+                source={{uri: baseUrl + "files/" + this.state.logo}}
+            />
+            info =
+                <View style={styles.infowithlogo}>
+
+                    <TouchableOpacity
+                        //onPress={() => this.showSerial()}
+                        onPress={() => this.setState({modalVisible: true})}
+
+                    >
+                        <Image
+                            source={require('../img/info.png')}
+                        />
+
+                    </TouchableOpacity>
+                </View>
+        } else {
+            info =
+                <View style={styles.info}>
+
+                    <TouchableOpacity
+                        //onPress={() => this.showSerial()}
+                        onPress={() => this.setState({modalVisible: true})}
+
+                    >
+                        <Image
+                            source={require('../img/info.png')}
+                        />
+
+                    </TouchableOpacity>
+                </View>
+        }
         return (
 
             <View>
 
                 <View style={styles.read}>
+                    {logo}
 
                     <TouchableOpacity
                         style={styles.touchable}
@@ -168,20 +268,7 @@ export default class Login extends Component {
                     {/*</TouchableOpacity>*/}
                     {/*</View>*/}
                 </View>
-
-                <View style={styles.info}>
-
-                    <TouchableOpacity
-                        //onPress={() => this.showSerial()}
-                        onPress={() => this.setState({modalVisible: true})}
-
-                    >
-                        <Image
-                            source={require('../img/info.png')}
-                        />
-
-                    </TouchableOpacity>
-                </View>
+                {info}
 
                 <Modal visible={this.state.modalVisible}
                        onRequestClose={() => {
@@ -192,8 +279,8 @@ export default class Login extends Component {
 
 
                     <View style={styles.read}>
-                        <Text style={{marginBottom:10, fontSize: 40}}>Codice univoco dispositivo:</Text>
-                        <Text style={{marginBottom:30,fontSize: 70, color: 'red'}}>{DeviceInfo.getUniqueID()}</Text>
+                        <Text style={{marginBottom: 10, fontSize: 40}}>Codice univoco dispositivo:</Text>
+                        <Text style={{marginBottom: 30, fontSize: 70, color: 'red'}}>{DeviceInfo.getUniqueID()}</Text>
 
                         <TouchableOpacity
                             //onPress={() => this.showSerial()}
@@ -518,7 +605,7 @@ const styles = StyleSheet.create({
     read: {
         alignSelf: 'center',
         marginTop: "5%",
-        alignItems:'center',
+        alignItems: 'center',
 
         //TODO: togliere
         flexDirection: 'column'
@@ -555,12 +642,16 @@ const styles = StyleSheet.create({
         fontSize: 30
 
     }, image: {
-        width: 10,
-        height: 10
+        width: 150,
+        height: 150
     },
     info: {
         position: 'absolute',
         bottom: 250,
+        right: 15,
+    }, infowithlogo: {
+        position: 'absolute',
+        bottom: 400,
         right: 15,
     },
 
