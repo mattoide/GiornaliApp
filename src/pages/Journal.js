@@ -9,6 +9,7 @@ export default class Journal extends Component {
         super(props);
 
         this.state = {
+            journal: ''
         };
     }
 
@@ -17,6 +18,10 @@ export default class Journal extends Component {
         ref: null,
     }
 
+    componentDidMount(){
+        this.setState({journal: this.props.navigation.getParam('journal', '')}) 
+
+    }
     onAndroidBackPress = () => {
         if (this.webView.canGoBack && this.webView.ref) {
             this.webView.ref.goBack();
@@ -37,20 +42,53 @@ export default class Journal extends Component {
         }
     }
 
+    navigationStateChangedHandler = ({url}) => {
+
+
+       // this.webView.canGoBack = true; 
+
+         if(!url.includes(this.state.journal)){
+            console.log("non vai");
+
+            this.webView.ref.stopLoading();
+        } else {
+            console.log(" vaiiiiii");
+   
+        }
+    };
+
+    _onNavigationStateChange(navState) {
+       
+        
+        if(!navState.url.includes(this.state.journal)){
+          //  console.log("non vai");
+
+            this.webView.ref.stopLoading();
+        } else {
+          //  console.log(" vaiiiiii");
+   
+        }
+        this.webView.canGoBack = navState.canGoBack; 
+    } 
 
 
     render() {
 
-        journal = this.props.navigation.getParam('journal', '')
 
         return (
 
 
             <WebView
 
-                source={{ uri: journal }}
+                source={{ uri: this.state.journal }}
                 ref={(webView) => { this.webView.ref = webView; }}
-                onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
+//onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack;  }}
+              //  onNavigationStateChange={this.navigationStateChangedHandler}
+
+                onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+
+
+
                 style={{ marginTop: 20, flex: 1 }}
 
             />
