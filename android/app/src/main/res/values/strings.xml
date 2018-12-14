@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">GiornaliApp</string>
+    <string name="app_name">Tidò</string>
+    <string name="sample_device_admin">GiornaliApp</string>
+    <string name="sample_device_admin_description">GiornaliApp</string>
 </resources>

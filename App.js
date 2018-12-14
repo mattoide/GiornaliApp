@@ -3,6 +3,11 @@ import Home from './src/pages/Home';
 import Journal from './src/pages/Journal';
 import PDFJournal from './src/pages/PDFJournal';
 
+import RNLockTask from 'react-native-lock-task';
+
+ RNLockTask.startLockTask();
+
+
 
 
 
@@ -14,7 +19,7 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTIm
 import { createStackNavigator } from 'react-navigation';
 
 //export const baseUrl = "http://192.168.137.1:8000/";
-//export const baseUrl = "http://192.168.1.11:8000/";
+//export const baseUrl = "http://192.168.1.7:8000/";
 export const baseUrl = "http://drink-web.eu:8000/";
 
 export const loginurl = "/api/login";

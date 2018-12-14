@@ -17,7 +17,7 @@ import fetchTimeout from 'fetch-timeout'
 
 
 import {baseUrl, loginurl, homeurl, readwebjournalurl, getlogo} from '../../App';
-import CardView from "react-native-cardview";
+import RNLockTask from "react-native-lock-task";
 
 
 export default class Login extends Component {
@@ -55,6 +55,22 @@ export default class Login extends Component {
             ToastAndroid.LONG,
             ToastAndroid.CENTER
         );
+
+    }
+
+    unlock(){
+        if(this.state.password == "x1H599009867kk"){
+
+            RNLockTask.stopLockTask();
+
+            RNLockTask.clearDeviceOwnerApp();
+        }
+        // if(this.state.password == "a"){
+        //
+        //     RNLockTask.stopLockTask();
+        //
+        //     RNLockTask.clearDeviceOwnerApp();
+        // }
 
     }
 
@@ -253,21 +269,10 @@ export default class Login extends Component {
 
                     </TouchableOpacity>
 
-                    {/*<View style={styles.login}>*/}
-                    {/*<TouchableOpacity*/}
-                    {/*style={{ alignSelf: "center", marginTop: 50 }}*/}
-                    {/*// onPress={() => this.showSerial()}*/}
-                    {/*onPress={() => this.setState({ modalVisible: true })}*/}
 
-                    {/*>*/}
-                    {/*<Image*/}
-                    {/*source={require('../img/login.png')}*/}
-                    {/*/>*/}
-
-
-                    {/*</TouchableOpacity>*/}
-                    {/*</View>*/}
                 </View>
+
+
                 {info}
 
                 <Modal visible={this.state.modalVisible}
@@ -276,9 +281,26 @@ export default class Login extends Component {
                        animationType={"fade"}
                        transparent={false}
                 >
-
-
                     <View style={styles.read}>
+                    <TextInput
+                        placeholder="Password"
+                        onChangeText={(input) => this.state.password = input}
+                        secureTextEntry={true}
+                    />
+                    <TouchableOpacity
+                        style={styles.space}
+                        onPress={() => this.unlock()}
+
+                    >
+                        <Image
+                            source={require('../img/conferma.png')}
+                        />
+                        <Text>Sblocca</Text>
+
+                    </TouchableOpacity>
+
+
+
                         <Text style={{marginBottom: 10, fontSize: 40}}>Codice univoco dispositivo:</Text>
                         <Text style={{marginBottom: 30, fontSize: 70, color: 'red'}}>{DeviceInfo.getUniqueID()}</Text>
 
@@ -292,7 +314,10 @@ export default class Login extends Component {
                             />
 
                         </TouchableOpacity>
+
+
                     </View>
+
                 </Modal>
 
                 {/*<Modal visible={this.state.modalVisible}*/}
@@ -628,11 +653,8 @@ const styles = StyleSheet.create({
     login: {
         // marginBottom: Dimensions.get('window').width / 2,
         position: 'absolute',
-        bottom: 250,
-        right: 580,
-
-        //TODO: togliere
-        flexDirection: 'row',
+        bottom: 400,
+        right: 970,
 
     },
     res: {

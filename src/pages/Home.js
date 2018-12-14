@@ -19,7 +19,6 @@ import GridView from 'react-native-super-grid';
 import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout';
 
-
 import {
     baseUrl,
     loginurl,
@@ -29,6 +28,7 @@ import {
     homeurlpdf,
     readpersonalurl
 } from '../../App';
+import RNLockTask from "react-native-lock-task";
 
 
 export default class Home extends Component {
@@ -251,7 +251,7 @@ export default class Home extends Component {
                     cornerRadius={5}
                   //  height={130}
                     height={132}
-                    //width={384}
+                    width={250}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -327,7 +327,6 @@ export default class Home extends Component {
     }
 
     render() {
-
         let banner;
 
         if (this.state.banner != '') {
@@ -1066,7 +1065,7 @@ const
         },
         image: {
              width: 250,
-             height: 130
+             height: 132
            // width: 384,
             //height: 132
         },
