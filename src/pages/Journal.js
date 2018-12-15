@@ -20,7 +20,7 @@ export default class Journal extends Component {
 
     componentDidMount(){
         this.setState({journal: this.props.navigation.getParam('journal', '')}) 
-
+//console.log(this.props.navigation.getParam('journal', ''))
     }
     onAndroidBackPress = () => {
         if (this.webView.canGoBack && this.webView.ref) {
@@ -81,6 +81,7 @@ export default class Journal extends Component {
             <WebView
 
                 source={{ uri: this.state.journal }}
+                javaScriptEnabled={true}
                 ref={(webView) => { this.webView.ref = webView; }}
 //onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack;  }}
               //  onNavigationStateChange={this.navigationStateChangedHandler}

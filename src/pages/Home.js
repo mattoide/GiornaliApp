@@ -340,11 +340,9 @@ export default class Home extends Component {
 
         if((this.state.nickname != "") && (this.state.nickname != null)){
             nickname = <Button
-                onPress={() => {}}
+                onPress={() => this.getpersonal()}
                 title={this.state.nickname}
                 color="#252523"
-
-
             />
         }
 
@@ -386,18 +384,18 @@ export default class Home extends Component {
 
 
 
-                        <Button
-                            onPress={() => this.getpersonal()}
-                            title=" PERSONALE "
-                            color="#252523"
-                        />
+                        {/*<Button*/}
+                            {/*onPress={() => this.getpersonal()}*/}
+                            {/*title=" PERSONALE "*/}
+                            {/*color="#252523"*/}
+                        {/*/>*/}
 
 
-                        <Button
-                            onPress={() => console.log("pressed")}
-                            title=" GIOCHI "
-                            color="#252523"
-                        />
+                        {/*<Button*/}
+                            {/*onPress={() => console.log("pressed")}*/}
+                            {/*title=" GIOCHI "*/}
+                            {/*color="#252523"*/}
+                        {/*/>*/}
 
 
                         {nickname}

@@ -215,7 +215,7 @@ export default class Login extends Component {
 
         if (this.state.logo) {
             logo = <Image
-                style={styles.image}
+                style={styles.logo}
                 source={{uri: baseUrl + "files/" + this.state.logo}}
             />
             info =
@@ -249,6 +249,7 @@ export default class Login extends Component {
                 </View>
         }
         return (
+            <View style={{backgroundColor: "white", flex: 1}}>
 
             <View>
 
@@ -386,6 +387,7 @@ export default class Login extends Component {
 
                 {/*</Modal>*/}
 
+            </View>
             </View>
         );
     }
@@ -667,13 +669,17 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150
     },
+    logo:{
+        width: 1024,
+        height: 200
+    },
     info: {
         position: 'absolute',
         bottom: 250,
         right: 15,
     }, infowithlogo: {
         position: 'absolute',
-        bottom: 400,
+        bottom: 468,
         right: 15,
     },
 
