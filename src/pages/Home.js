@@ -249,9 +249,10 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                  //  height={130}
+                  //  height={132}
+                  //   width={250}
                     height={132}
-                    width={250}
+                    width={384}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -275,9 +276,9 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                   // height={130}
-                     //width={384}
-                     height={132}
+                    //  height={130}
+                    height={132}
+                    width={384}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -301,7 +302,9 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                    height={130}
+                    //  height={130}
+                    height={132}
+                    width={384}
                     marginTop={2}
                     cornerOverlap={true}
                 >
@@ -417,7 +420,8 @@ export default class Home extends Component {
 
 
                     <GridView
-                        itemDimension={200}
+                        itemDimension={335}
+                        spacing={5}
                         items={this.state.filteredJournals}
                         renderItem={item => (this.renderItem(item))}
                         refreshControl={
@@ -1065,7 +1069,7 @@ const
              width: 250,
              height: 132
            // width: 384,
-            //height: 132
+           //  height: 132
         },
         text: {
             color: 'red'

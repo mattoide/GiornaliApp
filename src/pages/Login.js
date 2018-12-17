@@ -59,7 +59,8 @@ export default class Login extends Component {
     }
 
     unlock(){
-        if(this.state.password == "x1H599009867kk"){
+        // if(this.state.password == "x1H599009867kk"){
+        if(this.state.password == "a"){
 
             RNLockTask.stopLockTask();
 

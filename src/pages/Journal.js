@@ -19,7 +19,17 @@ export default class Journal extends Component {
     }
 
     componentDidMount(){
-        this.setState({journal: this.props.navigation.getParam('journal', '')}) 
+        let j = this.props.navigation.getParam('journal', '');
+        let jreplaced;
+
+        if(j.includes("watch?v=")){
+           jreplaced = j.replace("watch?v=", "embed/");
+            this.setState({journal: jreplaced})
+
+        } else {
+            this.setState({journal: j})
+
+        }
 //console.log(this.props.navigation.getParam('journal', ''))
     }
     onAndroidBackPress = () => {
@@ -42,38 +52,21 @@ export default class Journal extends Component {
         }
     }
 
-    navigationStateChangedHandler = ({url}) => {
-
-
-       // this.webView.canGoBack = true; 
-
-         if(!url.includes(this.state.journal)){
-            console.log("non vai");
-
-            this.webView.ref.stopLoading();
-        } else {
-            console.log(" vaiiiiii");
-   
-        }
-    };
 
     _onNavigationStateChange(navState) {
        
         
         if(!navState.url.includes(this.state.journal)){
-          //  console.log("non vai");
-
+            console.log("non vai");
             this.webView.ref.stopLoading();
         } else {
-          //  console.log(" vaiiiiii");
-   
+            console.log(" vaiiiiii");
         }
         this.webView.canGoBack = navState.canGoBack; 
     } 
 
 
     render() {
-
 
         return (
 
