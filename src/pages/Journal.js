@@ -54,7 +54,15 @@ export default class Journal extends Component {
 
     _onNavigationStateChange(navState) {
        
-        
+        if(this.state.journal || this.state.journal != ''){
+              if(!navState.url.includes(this.state.journal)){
+            console.log("non vai");
+            this.webView.ref.stopLoading();
+        } else {
+            console.log(" vaiiiiii");
+        }
+        }
+
        /* if(!navState.url.includes(this.state.journal)){
             console.log("non vai");
             this.webView.ref.stopLoading();
