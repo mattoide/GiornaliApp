@@ -30,7 +30,6 @@ export default class Journal extends Component {
             this.setState({journal: j})
 
         }
-//console.log(this.props.navigation.getParam('journal', ''))
     }
     onAndroidBackPress = () => {
         if (this.webView.canGoBack && this.webView.ref) {
@@ -56,12 +55,12 @@ export default class Journal extends Component {
     _onNavigationStateChange(navState) {
        
         
-        if(!navState.url.includes(this.state.journal)){
+       /* if(!navState.url.includes(this.state.journal)){
             console.log("non vai");
             this.webView.ref.stopLoading();
         } else {
             console.log(" vaiiiiii");
-        }
+        }*/
         this.webView.canGoBack = navState.canGoBack; 
     } 
 
