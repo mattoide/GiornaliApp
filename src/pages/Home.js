@@ -28,7 +28,6 @@ import {
     homeurlpdf,
     readpersonalurl
 } from '../../App';
-import RNLockTask from "react-native-lock-task";
 
 
 export default class Home extends Component {
@@ -244,19 +243,17 @@ export default class Home extends Component {
             journ = <TouchableOpacity
                 onPress={() => this.readJournal(item.url)}
             >
-
                 <CardView
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                  //  height={132}
-                  //   width={250}
-                    height={132}
-                    width={384}
-                    marginTop={2}
+                      height={110}
+                    width={300}
+                   // height={125}
+                   // width={375}
+                    marginBottom={20}
                     cornerOverlap={true}
                 >
-
 
                     <Image
                         style={styles.image}
@@ -272,17 +269,17 @@ export default class Home extends Component {
                 onPress={() => this.readPDFJournal(item.file)}
             >
 
-                <CardView
+              <CardView
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                    //  height={130}
-                    height={132}
-                    width={384}
-                    marginTop={2}
+                      height={110}
+                    width={300}
+                   // height={125}
+                   // width={375}
+                    marginBottom={20}
                     cornerOverlap={true}
                 >
-
 
                     <Image
                         style={styles.image}
@@ -302,10 +299,11 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                    //  height={130}
-                    height={132}
-                    width={384}
-                    marginTop={2}
+                      height={110}
+                    width={300}
+                   // height={125}
+                   // width={375}
+                    marginBottom={20}
                     cornerOverlap={true}
                 >
 
@@ -421,7 +419,8 @@ export default class Home extends Component {
 
                     <GridView
                         itemDimension={335}
-                        spacing={5}
+                        spacing={1}  
+                        horizontal={false}
                         items={this.state.filteredJournals}
                         renderItem={item => (this.renderItem(item))}
                         refreshControl={
@@ -1066,10 +1065,8 @@ const
             height: 60
         },
         image: {
-             width: 250,
-             height: 132
-           // width: 384,
-           //  height: 132
+            height: 110,
+            width: 300
         },
         text: {
             color: 'red'
