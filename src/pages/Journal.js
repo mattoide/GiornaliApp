@@ -1,5 +1,13 @@
-import React, {Component} from 'react';
-import {View, Button, WebView, BackHandler, Platform} from 'react-native';
+import React, {
+    Component
+} from 'react';
+import {
+    View,
+    Button,
+    WebView,
+    BackHandler,
+    Platform
+} from 'react-native';
 
 
 export default class Journal extends Component {
@@ -23,10 +31,14 @@ export default class Journal extends Component {
 
         if (j.includes("watch?v=")) {
             jreplaced = j.replace("watch?v=", "embed/");
-            this.setState({journal: jreplaced})
+            this.setState({
+                journal: jreplaced
+            })
 
         } else {
-            this.setState({journal: j})
+            this.setState({
+                journal: j
+            })
 
         }
     }
@@ -52,15 +64,18 @@ export default class Journal extends Component {
     }
 
 
-    _onNavigationStateChange(navState) {  
-        console.log("NAVSTATEURLL: "+ navState.url)
+    _onNavigationStateChange(navState) {
 
-        console.log("URL: "+ this.state.journal)
-        if (!navState.url.includes( 'about:blank')) {
-            if (!navState.url.includes(this.state.journal)) {
+        console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO: " + this.state.journal);
+        console.log("NAVSTATEURLL: " + navState.url)
+        var a = this.state.journal.split('.');
+        console.log("URL: " + this.state.journal)
+        if (!navState.url.includes('about:blank')) {
+            // if (!navState.url.includes(this.state.journal)) {
+            if (!navState.url.includes(a[1])) {
                 console.log("URL: " + navState.url + " Quindi NON vai");
-                this.webView.ref.stopLoading(); 
- 
+                this.webView.ref.stopLoading();
+
             } else {
                 console.log("URL: " + navState.url + " Quindi vaiiiiiiii");
 
@@ -82,20 +97,36 @@ export default class Journal extends Component {
         return (
 
 
-            <WebView
+            <
+            WebView
 
-                source={{uri: this.state.journal}}
-                javaScriptEnabled={true}
-                ref={(webView) => {
+            source = {
+                {
+                    uri: this.state.journal
+                }
+            }
+            javaScriptEnabled = {
+                true
+            }
+            ref = {
+                (webView) => {
                     this.webView.ref = webView;
-                }}
-                //onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack;  }}
-                //  onNavigationStateChange={this.navigationStateChangedHandler}
+                }
+            }
+            //onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack;  }}
+            //  onNavigationStateChange={this.navigationStateChangedHandler}
 
-                onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+            onNavigationStateChange = {
+                this._onNavigationStateChange.bind(this)
+            }
 
 
-                style={{marginTop: 20, flex: 1}}
+            style = {
+                {
+                    marginTop: 20,
+                    flex: 1
+                }
+            }
 
             />
             /*   <View style={{ flex: 1 }}>
@@ -118,4 +149,3 @@ export default class Journal extends Component {
         );
     }
 }
-

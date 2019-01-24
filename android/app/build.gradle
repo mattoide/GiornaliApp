@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-view-pdf')
     compile project(':react-native-lock-task')
     compile project(':react-native-pdf')
     compile project(':rn-fetch-blob')

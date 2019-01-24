@@ -12,11 +12,10 @@ import {
     Modal
 } from 'react-native';
 
-import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout'
 
 
-import {baseUrl, loginurl, homeurl, readwebjournalurl, getlogo} from '../../App';
+import {baseUrl, loginurl, homeurl, readwebjournalurl, getlogo, iddispositivo} from '../../App';
 import RNLockTask from "react-native-lock-task";
 
 
@@ -51,7 +50,7 @@ export default class Login extends Component {
         //console.log(DeviceInfo.getUniqueID())
         ToastAndroid.showWithGravity(
             // DeviceInfo.getSerialNumber(),
-            DeviceInfo.getUniqueID(),
+            iddispositivo,
             ToastAndroid.LONG,
             ToastAndroid.CENTER
         );
@@ -94,42 +93,35 @@ export default class Login extends Component {
 
         // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + getlogo, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
-            // body: "deviceid=" + "aaa",
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                // body: "deviceid=" +iddispositivo // <-- Post parameters
+                body: "iddispositivo=" + "aaa",
 
 
-        }, this.state.fetchTimeoutTime, "Il server non risponde")
+            }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
-                if (response.status != 200) {
-
-                    // response.json().then(
-                    //     (responseJson) => {
-                    //
-                    //         ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
-                    //     });
-
-
-                } else {
-
-                    response.json()
-                        .then((responseJson) => {
-                            // console.log(responseJson)
-                            this.setState({logo: responseJson.resp});
+                switch (response.status) {
+                    case 200:
+                        response.json()
+                            .then((responseJson) => {
+                                this.setState({
+                                    logo: responseJson.logo
+                                });
 
 
-                        });
+                            });
+                        break;
 
-
-                    // console.log(this.state.logo);
-
-
+                    default:
+                        break;
                 }
+
+
             }).catch((error) => {
                 //console.log(error);
                 this.showTimeoutError(error)
@@ -139,46 +131,42 @@ export default class Login extends Component {
 
 
     checkDevice() {
-
-        // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + readwebjournalurl, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
-            // body: "deviceid=" + "aaa",
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                //body: "iddispositivo=" + DeviceInfo.getUniqueID() // <-- Post parameters
+                body: "iddispositivo=" + "aaa",
 
-
-        }, this.state.fetchTimeoutTime, "Il server non risponde")
+            }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
-                if (response.status != 200) {
 
-                    response.json().then(
-                        (responseJson) => {
+                switch (response.status) {
+                    case 200:
+                        this.props.navigation.navigate('Home')
+                        break;
 
-                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
-                        });
-
-
-                } else {
-
-                    this.props.navigation.navigate('Home')
-
+                    default:
+                        response.json().then(
+                            (responseJson) => {
+                                ToastAndroid.showWithGravity(responseJson.messaggio, ToastAndroid.LONG, ToastAndroid.CENTER);
+                            });
+                        break;
                 }
-            }).catch((error) => {
-                //console.log(error);
-                this.showTimeoutError(error)
-                this.setState({filteredJournals: []});
 
+            }).catch((error) => {
+                this.showTimeoutError(error)
+                this.setState({
+                    filteredJournals: []
+                });
             });
     }
 
     login() {
-
         NetInfo.isConnected.fetch().then(isConnected => {
             if (isConnected) {
                 this.loginapi()
@@ -186,7 +174,6 @@ export default class Login extends Component {
                 this.showNoInternetError();
             }
         });
-
     }
 
     showNoInternetError() {
@@ -217,8 +204,8 @@ export default class Login extends Component {
         if (this.state.logo) {
             logo = <Image
                 style={styles.logo}
-                source={{uri: baseUrl + "files/" + this.state.logo}}
-            />
+                source={{uri: `data:image/png;base64,${this.state.logo}`}} 
+                />
             info =
                 <View style={styles.infowithlogo}>
 
@@ -234,7 +221,7 @@ export default class Login extends Component {
                     </TouchableOpacity>
                 </View>
         } else {
-            info =
+            info = 
                 <View style={styles.info}>
 
                     <TouchableOpacity
@@ -274,7 +261,6 @@ export default class Login extends Component {
 
                 </View>
 
-
                 {info}
 
                 <Modal visible={this.state.modalVisible}
@@ -304,7 +290,7 @@ export default class Login extends Component {
 
 
                         <Text style={{marginBottom: 10, fontSize: 40}}>Codice univoco dispositivo:</Text>
-                        <Text style={{marginBottom: 30, fontSize: 70, color: 'red'}}>{DeviceInfo.getUniqueID()}</Text>
+                        <Text style={{marginBottom: 30, fontSize: 70, color: 'red'}}>{iddispositivo}</Text>
 
                         <TouchableOpacity
                             //onPress={() => this.showSerial()}

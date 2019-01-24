@@ -41,6 +41,7 @@
 		30FF82F37E3841B487D958D4 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4D6527111245508E638590 /* libRNDeviceInfo-tvOS.a */; };
 		D5365A5E694A460C9E260DF5 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD846E7BA6647D29B56010F /* libRNFetchBlob.a */; };
 		BF30306ECB9F454FA2ED9A9C /* libRCTPdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D28B905991422EB54C113F /* libRCTPdf.a */; };
+		3AC297B84D66470DAB546213 /* libReactNativeViewPDF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FB3A1BBC20421E8685A7AA /* libReactNativeViewPDF.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -353,6 +354,8 @@
 		DBD846E7BA6647D29B56010F /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		4C82A006E25A46D98DFF1E26 /* RCTPdf.xcodeproj */ = {isa = PBXFileReference; name = "RCTPdf.xcodeproj"; path = "../node_modules/react-native-pdf/ios/RCTPdf.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		D4D28B905991422EB54C113F /* libRCTPdf.a */ = {isa = PBXFileReference; name = "libRCTPdf.a"; path = "libRCTPdf.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		DFAB3E1D10FE416F94AB0B69 /* ReactNativeViewPDF.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeViewPDF.xcodeproj"; path = "../node_modules/react-native-view-pdf/ReactNativeViewPDF.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A8FB3A1BBC20421E8685A7AA /* libReactNativeViewPDF.a */ = {isa = PBXFileReference; name = "libReactNativeViewPDF.a"; path = "libReactNativeViewPDF.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,6 +386,7 @@
 				312B3093ACCE4C2EB1A3D821 /* libRNDeviceInfo.a in Frameworks */,
 				D5365A5E694A460C9E260DF5 /* libRNFetchBlob.a in Frameworks */,
 				BF30306ECB9F454FA2ED9A9C /* libRCTPdf.a in Frameworks */,
+				3AC297B84D66470DAB546213 /* libReactNativeViewPDF.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +577,7 @@
 				5F5441911E15478AB2309A29 /* RNDeviceInfo.xcodeproj */,
 				9B0C1019DD4C4E9D86586234 /* RNFetchBlob.xcodeproj */,
 				4C82A006E25A46D98DFF1E26 /* RCTPdf.xcodeproj */,
+				DFAB3E1D10FE416F94AB0B69 /* ReactNativeViewPDF.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1204,12 +1209,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Debug;
@@ -1235,12 +1242,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Release;
@@ -1266,6 +1275,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Debug;
@@ -1290,6 +1300,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Release;
@@ -1323,12 +1334,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Debug;
@@ -1362,12 +1375,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Release;
@@ -1400,12 +1415,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Debug;
@@ -1438,12 +1455,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-pdf\ios\RCTPdf/**",
+					"$(SRCROOT)\..\node_modules\react-native-view-pdf\ReactNativeViewPDF",
 				);
 			};
 			name = Release;

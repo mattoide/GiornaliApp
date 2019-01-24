@@ -26,7 +26,8 @@ import {
     readpdfjournalurl,
     homeurlweb,
     homeurlpdf,
-    readpersonalurl
+    readpersonalurl,
+    iddispositivo
 } from '../../App';
 
 
@@ -67,7 +68,7 @@ export default class Home extends Component {
         if (this.state.email != '') {
             ToastAndroid.showWithGravity(
                 // DeviceInfo.getSerialNumber(),
-                DeviceInfo.getUniqueID(),
+                iddispositivo,
                 ToastAndroid.LONG,
                 ToastAndroid.CENTER
             );
@@ -129,12 +130,6 @@ export default class Home extends Component {
 
     componentDidMount() {
 
-        this.state.channels.sport = this.props.navigation.getParam('sport', ''),
-            this.state.channels.politica = this.props.navigation.getParam('politica', ''),
-            this.state.channels.cronaca = this.props.navigation.getParam('cronaca', ''),
-            this.state.channels.spettacolo = this.props.navigation.getParam('spettacolo', ''),
-            this.state.channels.curiosita = this.props.navigation.getParam('curiosita', '')
-
         this.state.email = this.props.navigation.getParam('email', '')
 
         this.refreshami();
@@ -180,13 +175,13 @@ export default class Home extends Component {
 
         try {
 
-            if (this.state.email != "") {
-                this.login();
+            // if (this.state.email != "") {
+               // this.login();
                 this.refreshweb();
-            } else {
-                this.refreshbyidweb();
+            // } else {
+            //     this.refreshbyidweb();
 
-            }
+            // }
 
         } catch (e) {
             console.log(e)
@@ -196,16 +191,17 @@ export default class Home extends Component {
     refreshamipdf() {
 
         try {
+                this.refreshpdf();
 
             /* this.login();
              this.refresh();*/
-            if (this.state.email != "") {
-                this.login();
-                this.refreshpdf();
-            } else {
-                this.refreshbyidpdf();
+            // if (this.state.email != "") {
+            //     this.login();
+            //     this.refreshpdf();
+            // } else {
+            //     this.refreshbyidpdf();
 
-            }
+            // }
 
 
         } catch (e) {
@@ -247,11 +243,10 @@ export default class Home extends Component {
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                      height={110}
-                    width={300}
-                   // height={125}
-                   // width={375}
+                    height={110}
+                    width={300} 
                     marginBottom={20}
+                    marginLeft={10}
                     cornerOverlap={true}
                 >
 
@@ -275,15 +270,14 @@ export default class Home extends Component {
                 onPress={() => this.readPDFJournal(item.file)}
             >
 
-              <CardView
+<CardView
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                      height={110}
-                    width={300}
-                   // height={125}
-                   // width={375}
+                    height={110}
+                    width={300} 
                     marginBottom={20}
+                    marginLeft={10}
                     cornerOverlap={true}
                 >
 
@@ -292,7 +286,7 @@ export default class Home extends Component {
                         source={{uri: baseUrl + "files/" + item.image}}
                     /> */}
 
-<Image 
+                        <Image 
                         style={styles.image}
                         source={{uri: `data:image/png;base64,${item.immagine}`}} 
                         />
@@ -306,25 +300,23 @@ export default class Home extends Component {
                 onPress={() => this.readPersonal(item.file, item.url)}
             >
 
-                <CardView
+<CardView
                     cardElevation={2}
                     cardMaxElevation={2}
                     cornerRadius={5}
-                      height={110}
-                    width={300}
-                   // height={125}
-                   // width={375}
+                    height={110}
+                    width={300} 
                     marginBottom={20}
+                    marginLeft={10}
                     cornerOverlap={true}
                 >
-
 
                     {/* <Image
                         style={styles.image}
                         source={{uri: baseUrl + "files/" + item.image}}
                     /> */}
 
-<Image 
+                    <Image 
                         style={styles.image}
                         source={{uri: `data:image/png;base64,${item.immagine}`}} 
                         />
@@ -333,7 +325,7 @@ export default class Home extends Component {
 
         }
 
-        return (
+        return ( 
 
             <View>
                 {journ}
@@ -348,19 +340,23 @@ export default class Home extends Component {
         if (this.state.banner != '') {
             banner = <Image
                 style={styles.imagebanner}
-                source={{uri: baseUrl + "files/" + this.state.banner}}
+                source={{uri: `data:image/png;base64,${this.state.banner}`}}
             />
         }
 
-        let nickname;
-
-        if((this.state.nickname != "") && (this.state.nickname != null)){
-            nickname = <Button
-                onPress={() => this.getpersonal()}
-                title={this.state.nickname}
-                color="#252523"
-            />
-        }
+        let nickname = <Button
+        onPress={() => this.getpersonal()}
+        title={this.state.nickname}
+        color="#252523"
+    />
+    // let nickname ;
+    //     if((this.state.nickname != "") && (this.state.nickname != null)){
+    //         nickname = <Button
+    //             onPress={() => this.getpersonal()}
+    //             title={this.state.nickname}
+    //             color="#252523"
+    //         />
+    //     }
 
 
         return (
@@ -464,7 +460,7 @@ export default class Home extends Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+            body: "deviceid=" + iddispositivo // <-- Post parameters
             // body: "deviceid=" + "aaa",
 
 
@@ -553,7 +549,7 @@ export default class Home extends Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
+            body: "deviceid=" + iddispositivo // <-- Post parameters
             // body: "deviceid=" + "aaa",
 
 
@@ -644,182 +640,130 @@ export default class Home extends Component {
 
     refreshweb() {
 
-        return fetchTimeout(baseUrl + homeurlweb, {
+        return fetchTimeout(baseUrl + readwebjournalurl, {
 
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: "sport=" + this.state.channels.sport + "&" + "politica=" + this.state.channels.politica + "&" +
-                "curiosita=" + this.state.channels.curiosita + "&" + "spettacolo=" + this.state.channels.spettacolo + "&" +
-                "cronaca=" + this.state.channels.cronaca + "&" + "email=" + this.state.email // <-- Post parameters
+                        //body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                        body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
+        .then((response) => {
+            switch (response.status) {
 
-            .then((response) => {
+                case 200:
 
+                 response.json().then((responseJson) => {
+                    this.setState({banner: responseJson.utente.banner});
+                    this.setState({nickname: responseJson.utente.nickname});
+                     
+                     if (responseJson.giornali.length <= 0) {
+                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                          this.setState({filteredJournals: []});
+                        } else {
+                            var list = responseJson.giornali;
+                            this.setState({journals: list});
+                            var filtJourn = [];
+                            
+                            this.state.journals.forEach(giornale => {
+                                filtJourn.push({
+                                    nome: giornale.nome,
+                                    immagine: giornale.immagine,
+                                    url: giornale.url
+                                });
+                            });
+       
+            this.setState({filteredJournals: filtJourn});
+        }
+    });
+    
+    break;
 
-                if (response.status != 200) {
+    default:
+    response.json().then(
+        (responseJson) => {
+            ToastAndroid.showWithGravity(
+                responseJson.messaggio,
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
+        });
 
-                    response.json().then(
-                        (obj) => {
-
-                            ToastAndroid.showWithGravity(
-                                obj.resp,
-                                ToastAndroid.LONG,
-                                ToastAndroid.CENTER
-                            );
-
-                        });
-                    this.setState({banner: ''});
-
-                    this.setState({filteredJournals: []});
-
-
-                } else {
-
-                    response.json()
-                        .then((responseJson) => {
-                            this.setState({banner: responseJson[0].banner});
-                            //console.log(this.state.banner)
-                            if (responseJson.journals.length <= 0) {
-
-                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
-
-                                this.setState({filteredJournals: []});
-
-                            } else {
-
-                                var list = responseJson.journals;
-
-                                /*for(let i = 0; i < list.length; i++){
-
-                                  if(list[i].image == "null"){
-                                    list[i].image = "noimg.jpg";
-                                  }
-
-                                }*/
-
-                                this.setState({journals: list});
-
-                                var filtJourn = [];
-                                for (var i = 0; i < this.state.journals.length; i++) {
-                                    filtJourn.push({
-                                        name: this.state.journals[i].nome,
-                                        image: this.state.journals[i].immagine,
-                                        cronaca: this.state.journals[i].cronaca,
-                                        curiosita: this.state.journals[i].curiosita,
-                                        description: this.state.journals[i].description,
-                                        politica: this.state.journals[i].politica,
-                                        spettacolo: this.state.journals[i].spettacolo,
-                                        sport: this.state.journals[i].sport,
-                                        url: this.state.journals[i].url
-                                    });
-
-                                }
-                                this.setState({filteredJournals: filtJourn});
-
-
-                            }
-                        })
-                }
-            }).catch((error) => {
-                //console.log(error);
+    this.setState({banner: ''});
+    this.setState({filteredJournals: []});
+    break;
+}
+}).catch((error) => {
                 this.showTimeoutError(error)
                 this.setState({filteredJournals: []});
-
             });
-    }
+        }
 
-    refreshpdf() {
+        refreshpdf() {
 
-        return fetchTimeout(baseUrl + homeurlpdf, {
-
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: "sport=" + this.state.channels.sport + "&" + "politica=" + this.state.channels.politica + "&" +
-                "curiosita=" + this.state.channels.curiosita + "&" + "spettacolo=" + this.state.channels.spettacolo + "&" +
-                "cronaca=" + this.state.channels.cronaca + "&" + "email=" + this.state.email // <-- Post parameters
-
-        }, this.state.fetchTimeoutTime, "Il server non risponde")
-
+            return fetchTimeout(baseUrl + readpdfjournalurl, {
+    
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                            //body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                            body: "iddispositivo=" + "aaa",
+    
+            }, this.state.fetchTimeoutTime, "Il server non risponde")
             .then((response) => {
-
-                if (response.status != 200) {
-
-                    response.json().then(
-                        (obj) => {
-
-                            ToastAndroid.showWithGravity(
-                                obj.resp,
-                                ToastAndroid.LONG,
-                                ToastAndroid.CENTER
-                            );
-
-                        });
-                    this.setState({banner: ''});
-
-                    this.setState({filteredJournals: []});
-
-
-                } else {
-
-                    response.json()
-                        .then((responseJson) => {
-                            this.setState({banner: responseJson[0].banner});
-
-                            if (responseJson.journals.length <= 0) {
-
-                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
-
-                                this.setState({filteredJournals: []});
-
+                switch (response.status) {
+    
+                    case 200:
+    
+                     response.json().then((responseJson) => {
+                    
+                         if (responseJson.giornali.length <= 0) {
+                              ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                              this.setState({filteredJournals: []});
                             } else {
-
-                                var list = responseJson.journals;
-
-                                /*for(let i = 0; i < list.length; i++){
-
-                                  if(list[i].image == "null"){
-                                    list[i].image = "noimg.jpg";
-                                  }
-
-                                }*/
-
+                                var list = responseJson.giornali;
                                 this.setState({journals: list});
-
                                 var filtJourn = [];
-                                for (var i = 0; i < this.state.journals.length; i++) {
+                                
+                                this.state.journals.forEach(giornale => {
                                     filtJourn.push({
-                                        name: this.state.journals[i].nome,
-                                        file: this.state.journals[i].file,
-                                        image: this.state.journals[i].immagine,
-                                        cronaca: this.state.journals[i].cronaca,
-                                        curiosita: this.state.journals[i].curiosita,
-                                        description: this.state.journals[i].description,
-                                        politica: this.state.journals[i].politica,
-                                        spettacolo: this.state.journals[i].spettacolo,
-                                        sport: this.state.journals[i].sport,
-                                        url: this.state.journals[i].url
+                                        nome: giornale.nome,
+                                        immagine: giornale.immagine,
+                                        url: giornale.url,
+                                        file: giornale.file
                                     });
-
-                                }
-                                this.setState({filteredJournals: filtJourn});
-
-                            }
-                        })
-                }
-            }).catch((error) => {
-                //console.log(error);
-                this.showTimeoutError(error)
-                this.setState({filteredJournals: []});
-
+                                });
+           
+                this.setState({filteredJournals: filtJourn});
+            }
+        });
+        
+        break;
+    
+        default:
+        response.json().then(
+            (responseJson) => {
+                ToastAndroid.showWithGravity(
+                    responseJson.messaggio,
+                    ToastAndroid.LONG,
+                    ToastAndroid.CENTER
+                );
             });
+    
+        this.setState({banner: ''});
+        this.setState({filteredJournals: []});
+        break;
     }
+    }).catch((error) => {
+                    this.showTimeoutError(error)
+                    this.setState({filteredJournals: []});
+                });
+            }
 
     login() {
 
@@ -832,28 +776,23 @@ export default class Home extends Component {
             },
 
 
-            body: "email=" + this.state.email + "&" + "alreadylogged=ok"  // <-- Post parameters
+           // body: "email=" + this.state.email + "&" + "alreadylogged=ok"  // <-- Post parameters
+            //body: "iddispositivo=" + iddispositivo // <-- Post parameters
+            body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
 
             .then((response) => {
 
 
-                /*     response.text().then(
-
-                         (obj) => {
-
-
-                             ToastAndroid.showWithGravity(
-                                 obj,
-                                 ToastAndroid.LONG,
-                                 ToastAndroid.CENTER
-                             );
-
-               console.log(obj)
-
-                         });*/
-
+                switch (response.status) {
+                    case 200:
+                        
+                        break;
+                
+                    default:
+                        break;
+                }
                 if (response.status != 200) {
 
                     response.text().then(
@@ -912,109 +851,71 @@ export default class Home extends Component {
 
 
     refreshbyidpersonal() {
-
-        // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + readpersonalurl, {
+    
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: "deviceid=" + DeviceInfo.getUniqueID() // <-- Post parameters
-            // body: "deviceid=" + "aaa",
-
+                        //body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                        body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
+        .then((response) => {
+            switch (response.status) {
 
-            .then((response) => {
+                case 200:
 
-                if (response.status != 200) {
+                 response.json().then((responseJson) => {
+                
+                     if (responseJson.giornali.length <= 0) {
+                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                          this.setState({filteredJournals: []});
+                        } else {
+                            var list = responseJson.giornali;
+                            this.setState({journals: list});
+                            var filtJourn = [];
+                            
+                            this.state.journals.forEach(giornale => {
+                                filtJourn.push({
+                                    nome: giornale.nome,
+                                    immagine: giornale.immagine,
+                                    url: giornale.url,
+                                    file: giornale.file
+                                });
+                            });
+       
+            this.setState({filteredJournals: filtJourn});
+        }
+    });
+    
+    break;
 
-                    response.json().then(
-                        (responseJson) => {
+    default:
+    response.json().then(
+        (responseJson) => {
+            ToastAndroid.showWithGravity(
+                responseJson.messaggio,
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
+        });
 
-                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
-                        });
-
-                    this.setState({banner: ''});
-
-                    this.setState({filteredJournals: []});
-
-
-                } else {
-
-                    response.json()
-                        .then((responseJson) => {
-                            this.setState({banner: responseJson[0].banner});
-                            this.setState({nickname: responseJson[0].nickname});
-
-                            if (responseJson.journals.length <= 0) {
-                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
-                                );
-
-                                this.setState({filteredJournals: []});
-
-                            } else {
-
-                                var list = responseJson.journals;
-
-                                /*for(let i = 0; i < list.length; i++){
-
-                                  if(list[i].image == "null"){
-                                    list[i].image = "noimg.jpg";
-                                  }
-
-                                }*/
-
-                                this.setState({journals: list});
-
-
-                                var filtJourn = [];
-
-                                for (var i = 0; i < this.state.journals.length; i++) {
-
-                                    filtJourn.push({
-                                        name: this.state.journals[i].name,
-                                        file: this.state.journals[i].file,
-                                        image: this.state.journals[i].image,
-
-                                        cronaca: this.state.journals[i].cronaca,
-                                        curiosita: this.state.journals[i].curiosita,
-                                        description: this.state.journals[i].description,
-                                        politica: this.state.journals[i].politica,
-                                        spettacolo: this.state.journals[i].spettacolo,
-                                        sport: this.state.journals[i].sport,
-                                        economia: this.state.journals[i].economia,
-                                        cultura: this.state.journals[i].cultura,
-                                        tecnologia: this.state.journals[i].tecnologia,
-                                        scienze: this.state.journals[i].scienze,
-                                        gossip: this.state.journals[i].gossip,
-                                        finanza: this.state.journals[i].finanza,
-                                        ambiente: this.state.journals[i].ambiente,
-                                        varie: this.state.journals[i].varie,
-
-                                        url: this.state.journals[i].url
-                                    });
-
-                                }
-                                this.setState({filteredJournals: filtJourn});
-
-                            }
-                        })
-                }
-            }).catch((error) => {
-                //console.log(error);
+    this.setState({banner: ''});
+    this.setState({filteredJournals: []});
+    break;
+}
+}).catch((error) => {
                 this.showTimeoutError(error)
                 this.setState({filteredJournals: []});
-
             });
     }
 
 }
 
 
-const
-    styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
 
         generalbar: {
@@ -1081,7 +982,7 @@ const
         image: {
             height: 110,
             width: 300
-        },
+        }, 
         text: {
             color: 'red'
         }

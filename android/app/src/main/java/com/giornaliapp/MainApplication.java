@@ -3,6 +3,7 @@ package com.giornaliapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rumax.reactnative.pdfviewer.PDFViewPackage;
 import com.rnlocktask.RNLockTaskPackage;
 import org.wonday.pdf.RCTPdfView;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PDFViewPackage(),
             new RNLockTaskPackage(),
             new RCTPdfView(),
             new RNFetchBlobPackage(),
