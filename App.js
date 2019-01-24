@@ -5,7 +5,7 @@ import PDFJournal from './src/pages/PDFJournal';
 
 import RNLockTask from 'react-native-lock-task';
 
- RNLockTask.startLockTask();
+// RNLockTask.startLockTask();
 
 
 
@@ -31,8 +31,8 @@ export const checkdeviceurl = "/api/checkdevice";
 export const getlogo = "/api/getlogo";
 
 
-export const readwebjournalurl = "/api/readwebjournals";
-export const readpdfjournalurl = "/api/readpdfjournals";
+export const readwebjournalurl = "/api/leggigiornaliweb";
+export const readpdfjournalurl = "/api/leggigiornalipdf";
 export const readpersonalurl = "/api/readpersonal";
 
 

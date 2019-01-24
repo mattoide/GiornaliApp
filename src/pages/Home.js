@@ -255,10 +255,16 @@ export default class Home extends Component {
                     cornerOverlap={true}
                 >
 
-                    <Image
+                    {/* <Image
                         style={styles.image}
                         source={{uri: baseUrl + "files/" + item.image}}
-                    />
+                    /> */}
+
+                    <Image 
+                        style={styles.image}
+                        source={{uri: `data:image/png;base64,${item.immagine}`}} 
+                        />
+
 
                 </CardView>
             </TouchableOpacity>
@@ -281,10 +287,15 @@ export default class Home extends Component {
                     cornerOverlap={true}
                 >
 
-                    <Image
+                    {/* <Image
                         style={styles.image}
                         source={{uri: baseUrl + "files/" + item.image}}
-                    />
+                    /> */}
+
+<Image 
+                        style={styles.image}
+                        source={{uri: `data:image/png;base64,${item.immagine}`}} 
+                        />
 
                 </CardView>
             </TouchableOpacity>
@@ -308,11 +319,15 @@ export default class Home extends Component {
                 >
 
 
-                    <Image
+                    {/* <Image
                         style={styles.image}
                         source={{uri: baseUrl + "files/" + item.image}}
-                    />
+                    /> */}
 
+<Image 
+                        style={styles.image}
+                        source={{uri: `data:image/png;base64,${item.immagine}`}} 
+                        />
                 </CardView>
             </TouchableOpacity>
 
@@ -435,7 +450,6 @@ export default class Home extends Component {
                 </View>
 
             </View>
-
 
         );
     }
@@ -692,8 +706,8 @@ export default class Home extends Component {
                                 var filtJourn = [];
                                 for (var i = 0; i < this.state.journals.length; i++) {
                                     filtJourn.push({
-                                        name: this.state.journals[i].name,
-                                        image: this.state.journals[i].image,
+                                        name: this.state.journals[i].nome,
+                                        image: this.state.journals[i].immagine,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
@@ -781,9 +795,9 @@ export default class Home extends Component {
                                 var filtJourn = [];
                                 for (var i = 0; i < this.state.journals.length; i++) {
                                     filtJourn.push({
-                                        name: this.state.journals[i].name,
+                                        name: this.state.journals[i].nome,
                                         file: this.state.journals[i].file,
-                                        image: this.state.journals[i].image,
+                                        image: this.state.journals[i].immagine,
                                         cronaca: this.state.journals[i].cronaca,
                                         curiosita: this.state.journals[i].curiosita,
                                         description: this.state.journals[i].description,
