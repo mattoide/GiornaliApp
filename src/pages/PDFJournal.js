@@ -32,7 +32,7 @@ export default class PDFJournal extends Component {
               style={{ flex: 1 }}
               resource={base64}
               resourceType={'base64'}
-              onError={() => console.log('Impossibile leggere il PDF', error)}
+              onError={(error) => console.log('Impossibile leggere il PDF', error)}
             />
           </View>
         );

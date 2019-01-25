@@ -111,10 +111,9 @@ export default class Home extends Component {
 
     readPersonal(file, url) {
 
-        if (file != '')
+        if (file != null && file != '')
             this.props.navigation.navigate('PDFJournal', {journal: file});
-
-        if (url != '')
+        else if (url != null && url != '')
             this.props.navigation.navigate('Journal', {journal: url});
     }
 
@@ -869,11 +868,11 @@ export default class Home extends Component {
 
                  response.json().then((responseJson) => {
                 
-                     if (responseJson.giornali.length <= 0) {
+                     if (responseJson.modulipersonali.length <= 0) {
                           ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
                           this.setState({filteredJournals: []});
                         } else {
-                            var list = responseJson.giornali;
+                            var list = responseJson.modulipersonali;
                             this.setState({journals: list});
                             var filtJourn = [];
                             

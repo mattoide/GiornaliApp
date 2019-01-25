@@ -66,10 +66,10 @@ export default class Journal extends Component {
 
     _onNavigationStateChange(navState) {
 
-        console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO: " + this.state.journal);
-        console.log("NAVSTATEURLL: " + navState.url)
+        // console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO: " + this.state.journal);
+        // console.log("NAVSTATEURLL: " + navState.url)
         var a = this.state.journal.split('.');
-        console.log("URL: " + this.state.journal)
+        // console.log("URL: " + this.state.journal)
         if (!navState.url.includes('about:blank')) {
             // if (!navState.url.includes(this.state.journal)) {
             if (!navState.url.includes(a[1])) {
@@ -97,36 +97,14 @@ export default class Journal extends Component {
         return (
 
 
-            <
-            WebView
+            <WebView style = {{marginTop: 20,flex: 1}}
+            source = {{uri: this.state.journal}}
+            javaScriptEnabled = {true}
+            ref = { (webView) => {this.webView.ref = webView; } }
+            onNavigationStateChange = { this._onNavigationStateChange.bind(this)}
 
-            source = {
-                {
-                    uri: this.state.journal
-                }
-            }
-            javaScriptEnabled = {
-                true
-            }
-            ref = {
-                (webView) => {
-                    this.webView.ref = webView;
-                }
-            }
             //onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack;  }}
             //  onNavigationStateChange={this.navigationStateChangedHandler}
-
-            onNavigationStateChange = {
-                this._onNavigationStateChange.bind(this)
-            }
-
-
-            style = {
-                {
-                    marginTop: 20,
-                    flex: 1
-                }
-            }
 
             />
             /*   <View style={{ flex: 1 }}>

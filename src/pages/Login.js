@@ -251,11 +251,19 @@ export default class Login extends Component {
                         <Image
                             source={require('../img/newspaper.png')}
                         />
-
-                        <Text style={{alignSelf: "center"}}>
-                            Leggi giornali!
+   <TouchableOpacity
+                        style={{backgroundColor: 'red', borderRadius: 10}}
+                        onPress={() => this.readJournals()}
+                    >
+                    <Text style={{alignSelf: "center"}}>
+                        Clicca qui per leggere i giornali!
                         </Text>
+                        <Text style={{alignSelf: "center"}}>
+                        Click here to read the newspapers!
+                        </Text>
+                    </TouchableOpacity>
 
+ 
                     </TouchableOpacity>
 
 
@@ -618,7 +626,7 @@ const styles = StyleSheet.create({
 
     read: {
         alignSelf: 'center',
-        marginTop: "5%",
+        marginTop: "3%", 
         alignItems: 'center',
 
         //TODO: togliere
