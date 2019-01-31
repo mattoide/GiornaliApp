@@ -98,8 +98,8 @@ export default class Login extends Component {
                     Accept: 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                // body: "deviceid=" +iddispositivo // <-- Post parameters
-                body: "iddispositivo=" + "aaa",
+                body: "iddispositivo=" +iddispositivo // <-- Post parameters
+                // body: "iddispositivo=" + "aaa",
 
 
             }, this.state.fetchTimeoutTime, "Il server non risponde")
@@ -137,8 +137,8 @@ export default class Login extends Component {
                     Accept: 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                //body: "iddispositivo=" + DeviceInfo.getUniqueID() // <-- Post parameters
-                body: "iddispositivo=" + "aaa",
+                body: "iddispositivo=" +iddispositivo // <-- Post parameters
+                // body: "iddispositivo=" + "aaa",
 
             }, this.state.fetchTimeoutTime, "Il server non risponde")
 

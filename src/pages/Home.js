@@ -646,8 +646,8 @@ export default class Home extends Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-                        //body: "iddispositivo=" + iddispositivo // <-- Post parameters
-                        body: "iddispositivo=" + "aaa",
+                        body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                        // body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
         .then((response) => {
@@ -709,9 +709,9 @@ export default class Home extends Component {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                            //body: "iddispositivo=" + iddispositivo // <-- Post parameters
-                            body: "iddispositivo=" + "aaa",
+                 },
+                            body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                            // body: "iddispositivo=" + "aaa",
     
             }, this.state.fetchTimeoutTime, "Il server non risponde")
             .then((response) => {
@@ -776,8 +776,8 @@ export default class Home extends Component {
 
 
            // body: "email=" + this.state.email + "&" + "alreadylogged=ok"  // <-- Post parameters
-            //body: "iddispositivo=" + iddispositivo // <-- Post parameters
-            body: "iddispositivo=" + "aaa",
+            body: "iddispositivo=" + iddispositivo // <-- Post parameters
+            // body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
 
@@ -857,8 +857,8 @@ export default class Home extends Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-                        //body: "iddispositivo=" + iddispositivo // <-- Post parameters
-                        body: "iddispositivo=" + "aaa",
+                        body: "iddispositivo=" + iddispositivo // <-- Post parameters
+                        // body: "iddispositivo=" + "aaa",
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
         .then((response) => {
