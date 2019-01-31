@@ -21,7 +21,7 @@ export default class PDFJournal extends Component {
 
    
     render() {
-     var base64 = this.props.navigation.getParam('journal', '');
+     var url = this.props.navigation.getParam('journal', '');
 
     
         return (
@@ -30,8 +30,8 @@ export default class PDFJournal extends Component {
             <PDFView
               fadeInDuration={250.0}
               style={{ flex: 1 }}
-              resource={base64}
-              resourceType={'base64'}
+              resource={baseUrl+"files/"+url}
+              resourceType={'url'}
               onError={(error) => console.log('Impossibile leggere il PDF', error)}
             />
           </View>
