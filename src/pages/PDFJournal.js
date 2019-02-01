@@ -26,7 +26,7 @@ export default class PDFJournal extends Component {
 
 let caricamento;
 
-     if(loading==true){
+     if(this.state.loading==true){
          caricamento = <Text>Attendi il caricamento del pdf...</Text>
      }
     
