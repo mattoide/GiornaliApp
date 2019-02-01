@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Text } from 'react-native';
 
 import Pdf from 'react-native-pdf';
 
@@ -17,9 +17,9 @@ export default class PDFJournal extends Component {
         this.state = {
             url: "",
             loading: true
-        };
-    }
-
+        }; 
+    }  
+ 
    
     render() {
      var url = this.props.navigation.getParam('journal', '');
@@ -27,11 +27,11 @@ export default class PDFJournal extends Component {
 let caricamento;
 
      if(this.state.loading==true){
-         caricamento = <Text>Attendi il caricamento del pdf...</Text>
+         caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
      }
     
         return (
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor:'white' }}>
             {/* Some Controls to change PDF resource */}
             {caricamento}
 
