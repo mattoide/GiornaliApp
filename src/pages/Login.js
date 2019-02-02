@@ -278,7 +278,7 @@ export default class Login extends Component {
                        transparent={false}
                 >
                     <View style={styles.read}>
-                    <TextInput
+                    {/* <TextInput
                         placeholder="Password"
                         onChangeText={(input) => this.state.password = input}
                         secureTextEntry={true}
@@ -293,7 +293,7 @@ export default class Login extends Component {
                         />
                         <Text>Sblocca</Text>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
 
 

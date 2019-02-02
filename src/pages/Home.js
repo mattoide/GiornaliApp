@@ -47,7 +47,7 @@ export default class Home extends Component {
             // email: '',
             // password: '',
             nickname:'',
-            fetchTimeoutTime: 10000,
+            fetchTimeoutTime: 60000,
             journaltype: 0,
             banner: '',
 
