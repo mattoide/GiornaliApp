@@ -10,7 +10,7 @@ import RNLockTask from 'react-native-lock-task';
 
 // RNLockTask.startLockTask();
 
-
+console.disableYellowBox = true;
 
 
 

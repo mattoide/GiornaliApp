@@ -6,6 +6,9 @@ import Pdf from 'react-native-pdf';
 import {baseUrl} from '../../App';
 import PDFView from 'react-native-view-pdf';
 
+import * as Progress from 'react-native-progress';
+
+
 
 
 
@@ -21,13 +24,16 @@ export default class PDFJournal extends Component {
     }  
  
    
-    render() {
+    render() { 
      var url = this.props.navigation.getParam('journal', '');
 
-let caricamento;
-
+let caricamento; 
+   
      if(this.state.loading==true){
-         caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
+        //  caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
+         caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} size={250} indeterminate={true} />
+
+  
      }
     
         return (

@@ -15,6 +15,7 @@
     "react-native-device-info": "^0.24.3",
     "react-native-lock-task": "^1.0.8",
     "react-native-pdf": "^5.0.9",
+    "react-native-progress": "^3.5.0",
     "react-native-searchbar": "^1.15.0",
     "react-native-super-grid": "^2.4.3",
     "react-native-view-pdf": "^0.6.4",
