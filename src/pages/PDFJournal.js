@@ -41,7 +41,8 @@ let caricamento;
   
     //  }
 
-     caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
+    // caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
+     caricamento =  <Progress.Bar progress={this.state.progress} width={200} />
 
         return (
           <View style={{ flex: 1, backgroundColor:'white' }}>
@@ -50,7 +51,9 @@ let caricamento;
             <Pdf
            style={styles.pdf}
             source={source}
-            fitPolicy={0} 
+            fitPolicy={2} 
+            enablePaging={true}
+            horizontal={true}
             activityIndicator={caricamento}
             onLoadComplete={(numberOfPages,filePath)=>{
                  this.setState({loading:false})

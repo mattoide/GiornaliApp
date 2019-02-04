@@ -18,6 +18,9 @@ import fetchTimeout from 'fetch-timeout'
 import {baseUrl, loginurl, homeurl, readwebjournalurl, getlogo, iddispositivo} from '../../App';
 import RNLockTask from "react-native-lock-task";
 
+import * as Progress from 'react-native-progress';
+
+
 
 export default class Login extends Component {
 
@@ -31,6 +34,9 @@ export default class Login extends Component {
             logo: '',
             modalVisible: false,
             fetchTimeoutTime: 10000,
+            loading: true,
+            toastVisible: false
+
 
         };
     }
@@ -153,7 +159,12 @@ export default class Login extends Component {
                     default:
                         response.json().then(
                             (responseJson) => {
+
+                                this.setState({toastVisible:true})
+
+                                if(this.state.toastVisible)
                                 ToastAndroid.showWithGravity(responseJson.messaggio, ToastAndroid.LONG, ToastAndroid.CENTER);
+
                             });
                         break;
                 }
@@ -177,21 +188,28 @@ export default class Login extends Component {
     }
 
     showNoInternetError() {
+        this.setState({toastVisible:true})
 
+        if(this.state.toastVisible){
         ToastAndroid.showWithGravity(
             "Nessuna connessoine ad internet",
             ToastAndroid.LONG,
             ToastAndroid.CENTER
         );
+        }
 
     }
 
     showTimeoutError(err) {
+        this.setState({toastVisible:true})
+
+                                if(this.state.toastVisible){
         ToastAndroid.showWithGravity(
             err,
             ToastAndroid.LONG,
             ToastAndroid.CENTER
         );
+                                }
 
     }
 
@@ -236,9 +254,18 @@ export default class Login extends Component {
                     </TouchableOpacity>
                 </View>
         }
+
+        let caricamento; 
+   
+ if(this.state.loading==true){
+    //  caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
+     caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} size={180} indeterminate={true} />
+// caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
+//caricamento =  <Progress.Bar progress={this.state.progress} width={200} />
+
+ }
         return (
             <View style={{backgroundColor: "white", flex: 1}}>
-
             <View>
 
                 <View style={styles.read}>

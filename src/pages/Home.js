@@ -18,6 +18,8 @@ import CardView from 'react-native-cardview';
 import GridView from 'react-native-super-grid';
 import DeviceInfo from 'react-native-device-info';
 import fetchTimeout from 'fetch-timeout';
+import * as Progress from 'react-native-progress';
+
 
 import {
     baseUrl,
@@ -50,6 +52,8 @@ export default class Home extends Component {
             fetchTimeoutTime: 60000,
             journaltype: 0,
             banner: '',
+            loading: true, 
+
 
             channels: {
 
@@ -69,7 +73,7 @@ export default class Home extends Component {
             ToastAndroid.showWithGravity(
                 // DeviceInfo.getSerialNumber(),
                 iddispositivo,
-                ToastAndroid.LONG,
+                ToastAndroid.SHORT,
                 ToastAndroid.CENTER
             );
         }
@@ -78,7 +82,7 @@ export default class Home extends Component {
     showTimeoutError(err) {
         ToastAndroid.showWithGravity(
             err,
-            ToastAndroid.LONG,
+            ToastAndroid.SHORT,
             ToastAndroid.CENTER
         );
 
@@ -121,7 +125,7 @@ export default class Home extends Component {
 
         ToastAndroid.showWithGravity(
             "Nessuna connessoine ad internet",
-            ToastAndroid.LONG,
+            ToastAndroid.SHORT,
             ToastAndroid.CENTER
         );
 
@@ -173,7 +177,9 @@ export default class Home extends Component {
     refreshamiweb() {
 
         try {
+            this.setState({filteredJournals:[]});
 
+            this.setState({loading:true});
             // if (this.state.email != "") {
                // this.login();
                 this.refreshweb();
@@ -184,12 +190,18 @@ export default class Home extends Component {
 
         } catch (e) {
             console.log(e)
+            this.setState({loading:false});
+
         }
     }
 
     refreshamipdf() {
 
         try {
+            this.setState({filteredJournals:[]});
+
+            this.setState({loading:true});
+
                 this.refreshpdf();
 
             /* this.login();
@@ -205,6 +217,8 @@ export default class Home extends Component {
 
         } catch (e) {
             console.log(e)
+            this.setState({loading:false});
+
         }
 
     }
@@ -221,10 +235,15 @@ export default class Home extends Component {
                  this.refreshbyidpdf();
 
              }*/
+             this.setState({filteredJournals:[]});
+
+             this.setState({loading:true});
             this.refreshbyidpersonal();
 
         } catch (e) {
             console.log(e)
+            this.setState({loading:false});
+
         }
 
     }
@@ -358,6 +377,20 @@ export default class Home extends Component {
     //     }
 
 
+    
+let caricamento; 
+   
+ if(this.state.loading==true){
+    //  caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
+     caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} size={180} indeterminate={true} />
+// caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
+//caricamento =  <Progress.Bar progress={this.state.progress} width={200} />
+
+ }
+
+
+
+
         return (
 
             <View style={styles.generalbar}>
@@ -426,7 +459,7 @@ export default class Home extends Component {
 
                 <View style={styles.cardbar}>
 
-
+{caricamento}
                     <GridView
                         itemDimension={335}
                         spacing={1}  
@@ -452,6 +485,8 @@ export default class Home extends Component {
 
     refreshbyidweb() {
 
+        this.setState({loading:true});
+
         // return fetch(baseUrl + readjournalurl, {
         return fetchTimeout(baseUrl + readwebjournalurl, {
             method: 'POST',
@@ -465,14 +500,14 @@ export default class Home extends Component {
 
         }, this.state.fetchTimeoutTime, "Il server non risponde")
 
-            .then((response) => {
+            .then((response) => { 
 
                 if (response.status != 200) {
 
                     response.json().then(
                         (responseJson) => {
 
-                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
+                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.SHORT, ToastAndroid.CENTER);
                         });
 
                     this.setState({banner: ''});
@@ -489,7 +524,7 @@ export default class Home extends Component {
 
 
                             if (responseJson.journals.length <= 0) {
-                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER
                                 );
 
                                 this.setState({filteredJournals: []});
@@ -561,7 +596,7 @@ export default class Home extends Component {
                     response.json().then(
                         (responseJson) => {
 
-                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.LONG, ToastAndroid.CENTER);
+                            ToastAndroid.showWithGravity(responseJson.resp, ToastAndroid.SHORT, ToastAndroid.CENTER);
                         });
                     this.setState({banner: ''});
 
@@ -577,7 +612,7 @@ export default class Home extends Component {
 
 
                             if (responseJson.journals.length <= 0) {
-                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER
+                                ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER
                                 );
 
                                 this.setState({filteredJournals: []});
@@ -660,7 +695,7 @@ export default class Home extends Component {
                     this.setState({nickname: responseJson.utente.nickname});
                      
                      if (responseJson.giornali.length <= 0) {
-                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                           this.setState({filteredJournals: []});
                         } else {
                             var list = responseJson.giornali;
@@ -678,6 +713,9 @@ export default class Home extends Component {
             this.setState({filteredJournals: filtJourn});
         }
     });
+
+    
+    this.setState({loading:false});
     
     break;
 
@@ -686,13 +724,15 @@ export default class Home extends Component {
         (responseJson) => {
             ToastAndroid.showWithGravity(
                 responseJson.messaggio,
-                ToastAndroid.LONG,
+                ToastAndroid.SHORT,
                 ToastAndroid.CENTER
             );
         });
 
     this.setState({banner: ''});
     this.setState({filteredJournals: []});
+    
+    this.setState({loading:false});
     break;
 }
 }).catch((error) => {
@@ -702,6 +742,8 @@ export default class Home extends Component {
         }
 
         refreshpdf() {
+            
+        this.setState({loading:true});
 
             return fetchTimeout(baseUrl + readpdfjournalurl, {
     
@@ -722,7 +764,7 @@ export default class Home extends Component {
                      response.json().then((responseJson) => {
                     
                          if (responseJson.giornali.length <= 0) {
-                              ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                              ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                               this.setState({filteredJournals: []});
                             } else {
                                 var list = responseJson.giornali;
@@ -742,6 +784,8 @@ export default class Home extends Component {
             }
         });
         
+        this.setState({loading:false});
+        
         break;
     
         default:
@@ -749,13 +793,15 @@ export default class Home extends Component {
             (responseJson) => {
                 ToastAndroid.showWithGravity(
                     responseJson.messaggio,
-                    ToastAndroid.LONG,
+                    ToastAndroid.SHORT,
                     ToastAndroid.CENTER
                 );
             });
     
         this.setState({banner: ''});
         this.setState({filteredJournals: []});
+        
+        this.setState({loading:false});
         break;
     }
     }).catch((error) => {
@@ -766,6 +812,7 @@ export default class Home extends Component {
 
     login() {
 
+        this.setState({loading:true});
         return fetchTimeout(baseUrl + loginurl, {
 
             method: 'POST',
@@ -800,7 +847,7 @@ export default class Home extends Component {
 
                             ToastAndroid.showWithGravity(
                                 obj,
-                                ToastAndroid.LONG,
+                                ToastAndroid.SHORT,
                                 ToastAndroid.CENTER
                             );
 
@@ -850,6 +897,8 @@ export default class Home extends Component {
 
 
     refreshbyidpersonal() {
+        
+        this.setState({loading:true});
         return fetchTimeout(baseUrl + readpersonalurl, {
     
             method: 'POST',
@@ -869,7 +918,7 @@ export default class Home extends Component {
                  response.json().then((responseJson) => {
                 
                      if (responseJson.modulipersonali.length <= 0) {
-                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.LONG, ToastAndroid.CENTER);
+                          ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                           this.setState({filteredJournals: []});
                         } else {
                             var list = responseJson.modulipersonali;
@@ -889,6 +938,8 @@ export default class Home extends Component {
         }
     });
     
+    this.setState({loading:false});
+    
     break;
 
     default:
@@ -896,13 +947,15 @@ export default class Home extends Component {
         (responseJson) => {
             ToastAndroid.showWithGravity(
                 responseJson.messaggio,
-                ToastAndroid.LONG,
+                ToastAndroid.SHORT,
                 ToastAndroid.CENTER
             );
         });
 
     this.setState({banner: ''});
     this.setState({filteredJournals: []});
+    
+    this.setState({loading:false});
     break;
 }
 }).catch((error) => {
