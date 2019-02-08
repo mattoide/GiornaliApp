@@ -42,7 +42,7 @@ let caricamento;
     //  }
 
     // caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
-     caricamento =  <Progress.Bar progress={this.state.progress} width={200} />
+     caricamento =  <View style={{flex:1,alignSelf:'center', alignItems:'center', top:100}}><Progress.Bar progress={this.state.progress} width={200} /><Text style={{alignSelf:'center', color:'blue'}}>Caricamento/Loading...</Text></View>
 
         return (
           <View style={{ flex: 1, backgroundColor:'white' }}>

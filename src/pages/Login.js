@@ -259,8 +259,8 @@ export default class Login extends Component {
    
  if(this.state.loading==true){
     //  caricamento =  <Text style={{flex:1,alignSelf:'center', textAlignVertical:'center'}}>Attendi il caricamento del pdf...</Text>
-     caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} size={180} indeterminate={true} />
-// caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
+    caricamento =  <View style={{flex:1,alignSelf:'center', alignItems:'center', top:100}}><Progress.Circle color={'white'} size={100} thickness={10} indeterminate={true} /><Text style={{alignSelf:'center', color:'white'}}>Caricamento/Loading...</Text></View>
+    // caricamento =  <Progress.Circle style={{flex:1,alignSelf:'center', top:100}} showsText={true} progress={this.state.progress} size={250} indeterminate={false} />
 //caricamento =  <Progress.Bar progress={this.state.progress} width={200} />
 
  }
