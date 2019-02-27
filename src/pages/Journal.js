@@ -16,7 +16,8 @@ export default class Journal extends Component {
         super(props);
 
         this.state = {
-            journal: ''
+            journal: '',
+            myNavState:''
         };
     }
 
@@ -44,6 +45,33 @@ export default class Journal extends Component {
     }
 
     onAndroidBackPress = () => {
+      //  this.setState({myNavState: navState})
+
+        console.log("backpress") 
+        console.log("urlState: " + this.state.myNavState.url)
+        console.log("journ: " + this.state.journal) 
+
+        if(this.webView.ref != null){
+        this.webView.ref.reload(); 
+        if(this.state.myNavState.url == this.state.journal){
+            console.log("backpressdetri") 
+
+            this.props.navigation.navigate('Home')
+
+            return true;   
+
+        }
+        }
+
+        if(this.state.myNavState.url == this.state.journal){
+            console.log("backpressdetri") 
+
+            this.props.navigation.navigate('Home')
+
+            return true;   
+
+        }
+
         if (this.webView.canGoBack && this.webView.ref) {
             this.webView.ref.goBack();
             return true;
@@ -63,8 +91,12 @@ export default class Journal extends Component {
         }
     }
 
-
+    _onLoadStart(navState){
+this.setState({myNavState: navState})
+    }
+  
     _onNavigationStateChange(navState) {
+        this.setState({myNavState: navState})
 
         // console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOO: " + this.state.journal);
         // console.log("NAVSTATEURLL: " + navState.url)
@@ -100,6 +132,9 @@ export default class Journal extends Component {
             <WebView style = {{marginTop: 20,flex: 1}}
             source = {{uri: this.state.journal}}
             javaScriptEnabled = {true}
+        //    onLoadStart={this._onLoadStart.bind(this)}
+            
+        
             ref = { (webView) => {this.webView.ref = webView; } }
             onNavigationStateChange = { this._onNavigationStateChange.bind(this)}
 

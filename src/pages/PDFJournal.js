@@ -29,7 +29,7 @@ export default class PDFJournal extends Component {
     render() { 
      var url = this.props.navigation.getParam('journal', '');
 
-     const source = {uri:baseUrl+"files/"+url ,cache:true};
+     const source = {uri:baseUrl+"files/"+url ,cache:true, expiration: 604800};
 
 
 let caricamento; 

@@ -45,6 +45,15 @@ export default class Home extends Component {
         this.state = {
             journals: [],
             filteredJournals: [],
+            cachedWebJournal: [],
+            cachedPdfJournal: [],
+            cachedPersJournal: [],
+
+
+            cacheWebValidity:0,
+            cachePdfValidity:0,
+            cachePersValidity:0,
+now:0,
 
             // email: '',
             // password: '',
@@ -155,6 +164,17 @@ export default class Home extends Component {
         this.refreshami()
     }
 
+    forceRefresh(){
+        var ora = new Date().getHours();
+
+        this.setState({cacheWebValidity:ora});
+        this.setState({cachePdfValidity:ora});
+        this.setState({cachePersValidity:ora});
+this.refreshami();
+
+
+    }
+
     refreshami() {
         NetInfo.isConnected.fetch().then(isConnected => {
             if (isConnected) {
@@ -177,17 +197,45 @@ export default class Home extends Component {
     refreshamiweb() {
 
         try {
-            this.setState({filteredJournals:[]});
+
+
+        if(this.state.cachedWebJournal<=0){
+            this.setState({filteredJournals: this.state.cachedWebJournal})
+
+            this.setState({loading:true});
+            this.refreshweb();
+
+        } else {
+            this.setState({filteredJournals: this.state.cachedWebJournal})
+            this.refreshweb();
+        } 
+    
+            /*
+            //this.setState({filteredJournals:[]});
 
             this.setState({loading:true});
             // if (this.state.email != "") {
                // this.login();
+
+var ora = new Date().getHours();
+               this.setState({now: ora}) 
+
+               if(this.state.now - this.state.cacheWebValidity>3){
                 this.refreshweb();
+                console.log("chiamata")
+
+               } else {
+                console.log("cache")
+                this.setState({loading:false});
+
+                   this.setState({filteredJournals: this.state.cachedWebJournal})
+
+               }
             // } else {
             //     this.refreshbyidweb();
 
             // }
-
+*/
         } catch (e) {
             console.log(e)
             this.setState({loading:false});
@@ -198,11 +246,41 @@ export default class Home extends Component {
     refreshamipdf() {
 
         try {
+
+
+
+                if(this.state.cachedPdfJournal<=0){
+                    this.setState({filteredJournals: this.state.cachedPdfJournal})
+
+                    this.setState({loading:true});
+                    this.refreshpdf();
+        
+                } else {
+                    this.setState({filteredJournals: this.state.cachedPdfJournal})
+                    this.refreshpdf();
+                }
+            /*
             this.setState({filteredJournals:[]});
 
             this.setState({loading:true});
 
+            
+
+            var ora = new Date().getHours();
+            this.setState({now: ora}) 
+
+            if(this.state.now - this.state.cachePdfValidity>3){
                 this.refreshpdf();
+             console.log("chiamata")
+
+            } else {
+             console.log("cache")
+             this.setState({loading:false});
+
+                this.setState({filteredJournals: this.state.cachedPdfJournal})
+
+            }
+*/
 
             /* this.login();
              this.refresh();*/
@@ -227,6 +305,17 @@ export default class Home extends Component {
 
         try {
 
+            if(this.state.cachedPersJournal<=0){
+                this.setState({filteredJournals: this.state.cachedPersJournal})
+
+                this.setState({loading:true});
+                this.refreshbyidpersonal();
+    
+            } else {
+                this.setState({filteredJournals: this.state.cachedPersJournal})
+                this.refreshbyidpersonal();
+            }
+
             /*
              if (this.state.email != "") {
                  this.login();
@@ -235,11 +324,25 @@ export default class Home extends Component {
                  this.refreshbyidpdf();
 
              }*/
-             this.setState({filteredJournals:[]});
+            /* this.setState({filteredJournals:[]});
 
              this.setState({loading:true});
-            this.refreshbyidpersonal();
 
+var ora = new Date().getHours();
+               this.setState({now: ora}) 
+
+             if(this.state.now - this.state.cachePersValidity>3){
+                this.refreshbyidpersonal();
+                console.log("chiamata")
+  
+             } else {
+              console.log("cache")
+              this.setState({loading:false});
+ 
+                 this.setState({filteredJournals: this.state.cachedPersJournal})
+ 
+             }
+*/
         } catch (e) {
             console.log(e)
             this.setState({loading:false});
@@ -697,7 +800,15 @@ let caricamento;
                      if (responseJson.giornali.length <= 0) {
                           ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                           this.setState({filteredJournals: []});
+                          this.setState({cachedWebJournal: []});
+
                         } else {
+
+                            if(responseJson.giornali.length != this.state.cachedWebJournal){
+                                console.log(responseJson.giornali.length)
+
+                            this.setState({loading:true});
+
                             var list = responseJson.giornali;
                             this.setState({journals: list});
                             var filtJourn = [];
@@ -709,13 +820,23 @@ let caricamento;
                                     url: giornale.url
                                 });
                             });
-       
-            this.setState({filteredJournals: filtJourn});
+                            this.setState({cachedWebJournal: filtJourn});
+                        this.setState({filteredJournals: filtJourn});
+ 
+                        this.setState({loading:false});
+
+                        }
+
+
+                            /*
+                            this.setState({cacheWebValidity: new Date().getHours()});
+                            this.setState({cachedWebJournal: filtJourn});
+                            this.setState({filteredJournals: filtJourn});
+                            */
         }
     });
 
-    
-    this.setState({loading:false});
+
     
     break;
 
@@ -743,8 +864,6 @@ let caricamento;
 
         refreshpdf() {
             
-        this.setState({loading:true});
-
             return fetchTimeout(baseUrl + readpdfjournalurl, {
     
                 method: 'POST',
@@ -767,6 +886,10 @@ let caricamento;
                               ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                               this.setState({filteredJournals: []});
                             } else {
+
+                                if(responseJson.giornali.length != this.state.cachedPdfJournal){
+                                    this.setState({loading:true});
+
                                 var list = responseJson.giornali;
                                 this.setState({journals: list});
                                 var filtJourn = [];
@@ -779,8 +902,12 @@ let caricamento;
                                         file: giornale.file
                                     });
                                 });
-           
-                this.setState({filteredJournals: filtJourn});
+
+                                this.setState({cachedPdfJournal: filtJourn});
+                                   this.setState({filteredJournals: filtJourn});
+                                   this.setState({loading:false});
+
+                            }
             }
         });
         
@@ -898,7 +1025,6 @@ let caricamento;
 
     refreshbyidpersonal() {
         
-        this.setState({loading:true});
         return fetchTimeout(baseUrl + readpersonalurl, {
     
             method: 'POST',
@@ -921,6 +1047,10 @@ let caricamento;
                           ToastAndroid.showWithGravity("Nessun giornale disponibile", ToastAndroid.SHORT, ToastAndroid.CENTER);
                           this.setState({filteredJournals: []});
                         } else {
+
+                            if(responseJson.giornali.length != this.state.cachedPersJournal){
+                                this.setState({loading:true});
+
                             var list = responseJson.modulipersonali;
                             this.setState({journals: list});
                             var filtJourn = [];
@@ -933,8 +1063,13 @@ let caricamento;
                                     file: giornale.file
                                 });
                             });
-       
-            this.setState({filteredJournals: filtJourn});
+
+
+                            this.setState({cachedPersJournal: filtJourn});
+                            this.setState({filteredJournals: filtJourn});
+                            this.setState({loading:false});
+
+                        }
         }
     });
     
