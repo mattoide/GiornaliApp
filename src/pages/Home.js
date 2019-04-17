@@ -1048,7 +1048,7 @@ let caricamento;
                           this.setState({filteredJournals: []});
                         } else {
 
-                            if(responseJson.giornali.length != this.state.cachedPersJournal){
+                            if(responseJson.modulipersonali.length != this.state.cachedPersJournal){
                                 this.setState({loading:true});
 
                             var list = responseJson.modulipersonali;
